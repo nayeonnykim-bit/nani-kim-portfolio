@@ -49,7 +49,10 @@ document.addEventListener('submit', (event) => {
     }));
     [['#gap-x-number', gapX], ['#gap-y-number', gapY], ['#section-gap-number', layoutGap]].forEach(([selector, slider]) => {
       const exact = $(selector);
-      exact.addEventListener('input', () => { slider.value = exact.value; slider.dispatchEvent(new Event('input', {bubbles:true})); });
+      const applyExact = () => { slider.value = exact.value; slider.dispatchEvent(new Event('input', {bubbles:true})); };
+      exact.addEventListener('input', applyExact);
+      exact.addEventListener('change', applyExact);
+      exact.addEventListener('keyup', applyExact);
       slider.addEventListener('input', () => { exact.value = slider.value; });
     });
   };
