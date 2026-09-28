@@ -15,7 +15,7 @@
   </header>
 
   <main>
-    <section class="hero panel" id="home">
+    <section class="hero panel" id="home" data-editable-section>
       <video autoplay muted loop playsinline poster="./assets/project-1.webp">
         <source src="https://framerusercontent.com/assets/IvCN6JT5geDQ6QEzbUaYWeU870.mp4" type="video/mp4" />
       </video>
@@ -25,21 +25,21 @@
     </section>
 
     <section class="works" id="works" aria-label="Selected work">
-      <a class="project panel" href="#contact" style="--image:url('./assets/project-1.webp')">
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-1.webp')">
         <div class="project-copy"><h2>O'CLOCK</h2><div class="tags"><span>Branding and Identity Design</span><span>Motion Design</span><span>Experimental Design</span></div></div>
       </a>
-      <a class="project panel" href="#contact" style="--image:url('./assets/project-2.webp')">
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-2.webp')">
         <div class="project-copy"><h2>Bloom</h2><div class="tags"><span>Motion Design</span><span>Website Design</span><span>UX Design</span></div></div>
       </a>
-      <a class="project panel" href="#contact" style="--image:url('./assets/project-3.jpg')">
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-3.jpg')">
         <div class="project-copy"><h2>Pulse</h2><div class="tags"><span>Experimental Design</span><span>Motion Design</span><span>UX Design</span></div></div>
       </a>
-      <a class="project panel" href="#contact" style="--image:url('./assets/project-4.jpg')">
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-4.jpg')">
         <div class="project-copy"><h2>Canvas</h2><div class="tags"><span>Experimental Design</span><span>UX Design</span><span>Motion Design</span></div></div>
       </a>
     </section>
 
-    <section class="about panel light" id="about">
+    <section class="about panel light" id="about" data-editable-section>
       <div class="about-intro">
         <p class="eyebrow">01 — About</p>
         <h2>About me</h2>
@@ -52,12 +52,24 @@
       </div>
     </section>
 
-    <section class="contact panel" id="contact">
+    <section class="contact panel" id="contact" data-editable-section>
       <div class="contact-copy"><p class="eyebrow">04 — Contact</p><h2>Let's get<br />in touch</h2><div class="contact-details"><div><span>Email</span><a href="mailto:hi@andrew.com">hi@andrew.com</a></div><div><span>Channels</span><a href="#">X.com</a><a href="#">Threads</a><a href="#">LinkedIn</a><a href="#">YouTube</a></div></div></div>
       <form id="contact-form"><label>Name<input name="name" placeholder="Your name" required /></label><label>Email<input name="email" type="email" placeholder="you@example.com" required /></label><label>Message<textarea name="message" placeholder="Tell me about your project" rows="5" required></textarea></label><button type="submit">Submit <span>↗</span></button><p class="form-status" aria-live="polite"></p></form>
       <footer>© 2026 Nani Kim <a href="#home">Back to top ↑</a></footer>
     </section>
   </main>
+
+  <button class="debug-trigger" type="button" aria-label="Open design editor">D</button>
+  <aside class="debug-menu" aria-label="Design editor" aria-hidden="true">
+    <div class="debug-head"><div><small>Portfolio editor</small><strong>Debug menu</strong></div><button type="button" data-debug-close>×</button></div>
+    <div class="debug-readout"><span id="debug-viewport">—</span><span id="debug-selection">No section selected</span></div>
+    <div class="debug-group"><p>Add section</p><div class="debug-grid"><button type="button" data-add="text">+ Text</button><button type="button" data-add="image">+ Image</button><button type="button" data-add="video">+ Video</button><button type="button" data-add="split">+ Split</button></div></div>
+    <div class="debug-group"><p>Selected layout</p><label>Height <input id="layout-height" type="range" min="240" max="1200" value="720" /></label><label>Padding <input id="layout-padding" type="range" min="0" max="160" value="32" /></label><label>Columns <select id="layout-columns"><option value="1">1 column</option><option value="2">2 columns</option><option value="3">3 columns</option></select></label><label>Align <select id="layout-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label>Background <input id="layout-bg" type="color" value="#111111" /></label><label>Text <input id="layout-color" type="color" value="#ffffff" /></label></div>
+    <div class="debug-group"><p>Media</p><label class="debug-upload">Upload image or video<input id="media-upload" type="file" accept="image/*,video/*" /></label><button type="button" id="remove-section">Remove selected section</button></div>
+    <div class="debug-group debug-toggles"><label><input id="toggle-grid" type="checkbox" /> Grid overlay</label><label><input id="toggle-outline" type="checkbox" /> Element outlines</label><label><input id="toggle-motion" type="checkbox" /> Reduce motion</label></div>
+    <div class="debug-actions"><button type="button" id="reset-draft">Reset</button><button type="button" id="save-draft" class="primary">Save draft</button></div>
+    <p class="debug-status" id="debug-status">Press D to close. Saved drafts stay in this browser until published.</p>
+  </aside>
   <script src="./script.js"></script>
 </body>
 </html>
