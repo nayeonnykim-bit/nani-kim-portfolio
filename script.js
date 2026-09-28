@@ -12,6 +12,48 @@ document.addEventListener('submit', (event) => {
   const status = document.querySelector('#debug-status'), selectionLabel = document.querySelector('#debug-selection');
   let selected = null, history = [], historyIndex = -1, restoring = false;
   const $ = selector => document.querySelector(selector);
+  const clearLegacyTextLayoutGaps = () => {
+    main.querySelectorAll('.hero-content,.about,.contact').forEach(layout => {
+      layout.style.removeProperty('column-gap');
+      layout.style.removeProperty('row-gap');
+      [...layout.children].forEach(child => {
+        child.style.removeProperty('margin-left');
+        child.style.removeProperty('margin-top');
+      });
+    });
+  };
+  const installGapControls = () => {
+    const gapX = $('#padding-x'), gapY = $('#padding-y'), layoutGap = $('#layout-gap');
+    gapX.closest('label').childNodes[0].textContent = 'Component gap X ';
+    gapY.closest('label').childNodes[0].textContent = 'Component gap Y ';
+    [gapX, gapY, layoutGap].forEach(input => { input.min = '-100'; input.max = '240'; input.step = '1'; });
+    layoutGap.closest('label').childNodes[0].textContent = 'Gap ';
+
+    const presets = '<button type="button" data-value="-16">−16</button><button type="button" data-value="-8">−8</button><button type="button" data-value="-4">−4</button><button type="button" data-value="0">0</button><button type="button" data-value="4">4</button><button type="button" data-value="8">8</button>';
+    const componentFine = document.createElement('div');
+    componentFine.className = 'gap-fine-controls';
+    componentFine.innerHTML = `<span>Overlap</span>${presets}<span>Exact X/Y</span><input id="gap-x-number" type="number" min="-100" max="240" step="1" value="${gapX.value}" aria-label="Exact horizontal component gap"><input id="gap-y-number" type="number" min="-100" max="240" step="1" value="${gapY.value}" aria-label="Exact vertical component gap">`;
+    gapY.closest('label').after(componentFine);
+
+    const gapFine = document.createElement('div');
+    gapFine.className = 'section-gap-fine';
+    gapFine.innerHTML = `<span>Overlap</span>${presets.replaceAll('data-value', 'data-section-value')}<label>Exact <input id="section-gap-number" type="number" min="-100" max="240" step="1" value="${layoutGap.value}" aria-label="Exact gap between sections"></label>`;
+    layoutGap.closest('label').after(gapFine);
+
+    componentFine.querySelectorAll('[data-value]').forEach(button => button.addEventListener('click', () => {
+      [gapX, gapY].forEach(input => { input.value = button.dataset.value; input.dispatchEvent(new Event('input', {bubbles:true})); });
+    }));
+    gapFine.querySelectorAll('[data-section-value]').forEach(button => button.addEventListener('click', () => {
+      layoutGap.value = button.dataset.sectionValue;
+      layoutGap.dispatchEvent(new Event('input', {bubbles:true}));
+    }));
+    [['#gap-x-number', gapX], ['#gap-y-number', gapY], ['#section-gap-number', layoutGap]].forEach(([selector, slider]) => {
+      const exact = $(selector);
+      exact.addEventListener('input', () => { slider.value = exact.value; slider.dispatchEvent(new Event('input', {bubbles:true})); });
+      slider.addEventListener('input', () => { exact.value = slider.value; });
+    });
+  };
+  installGapControls();
   const openDb = () => new Promise((resolve, reject) => {
     const request = indexedDB.open('nani-portfolio-editor', 2);
     request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('drafts')) request.result.createObjectStore('drafts'); };
@@ -32,7 +74,7 @@ document.addEventListener('submit', (event) => {
   const updateHistoryButtons = () => { $('#undo-change').disabled = historyIndex <= 0; $('#redo-change').disabled = historyIndex >= history.length - 1; };
   const recordHistory = () => { if (restoring) return; history = history.slice(0, historyIndex + 1); history.push(snapshot()); if (history.length > 40) history.shift(); historyIndex = history.length - 1; updateHistoryButtons(); };
   const travelHistory = step => { const next = historyIndex + step; if (next < 0 || next >= history.length) return; historyIndex = next; restoreSnapshot(history[next]); updateHistoryButtons(); status.textContent = step < 0 ? 'Undid the last change.' : 'Redid the change.'; };
-  try { const draft = await dbGet('current'); if (draft?.html) { main.innerHTML = draft.html; if (draft.mainStyle) main.setAttribute('style', draft.mainStyle); if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle); status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()}.`; } } catch (error) { status.textContent = `Editor storage unavailable: ${error.message}`; }
+  try { const draft = await dbGet('current'); if (draft?.html) { main.innerHTML = draft.html; if (draft.mainStyle) main.setAttribute('style', draft.mainStyle); if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle); clearLegacyTextLayoutGaps(); status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()}.`; } } catch (error) { status.textContent = `Editor storage unavailable: ${error.message}`; }
   recordHistory();
 
   const panels = () => [...main.querySelectorAll('.panel')];
@@ -66,8 +108,19 @@ document.addEventListener('submit', (event) => {
   bind('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
   bind('#layout-width', value => { main.style.width = `${value}%`; main.style.marginInline = 'auto'; }, '%');
   bind('#layout-gap', value => { main.style.display = 'flex'; main.style.flexDirection = 'column'; main.style.gap = `${Math.max(0, Number(value))}px`; [...main.children].forEach((child, i) => child.style.marginTop = Number(value) < 0 && i ? `${value}px` : ''); }, 'px');
-  const setLayoutGap = (axis, value) => main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => layout.style[axis === 'x' ? 'columnGap' : 'rowGap'] = `${Math.max(0, Number(value))}px`);
-  bind('#padding-x', value => setLayoutGap('x', value), 'px'); bind('#padding-y', value => setLayoutGap('y', value), 'px');
+  const setProjectGap = (axis, rawValue) => {
+    clearLegacyTextLayoutGaps();
+    const value = Number(rawValue);
+    main.querySelectorAll('[data-project-grid]').forEach(layout => {
+      const columns = Math.max(1, Number(layout.dataset.columns) || 1);
+      layout.style[axis === 'x' ? 'columnGap' : 'rowGap'] = `${Math.max(0, value)}px`;
+      [...layout.children].forEach((child, index) => {
+        if (axis === 'x') child.style.marginLeft = value < 0 && index % columns !== 0 ? `${value}px` : '';
+        else child.style.marginTop = value < 0 && index >= columns ? `${value}px` : '';
+      });
+    });
+  };
+  bind('#padding-x', value => setProjectGap('x', value), 'px'); bind('#padding-y', value => setProjectGap('y', value), 'px');
   bind('#margin-x', value => { main.style.marginLeft = `${value}px`; main.style.marginRight = `${value}px`; main.style.width = `calc(100% - ${value * 2}px)`; }, 'px'); bind('#margin-y', value => { main.style.marginTop = `${value}px`; main.style.marginBottom = `${value}px`; }, 'px');
   bind('#layout-columns', value => { const grid = $('[data-project-grid]'); grid.dataset.columns = value; grid.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
   bind('#layout-align', value => panels().forEach(panel => panel.style.textAlign = value)); bind('#layout-items', value => panels().forEach(panel => panel.style.alignItems = value)); bind('#layout-justify', value => panels().forEach(panel => panel.style.justifyContent = value));
