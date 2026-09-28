@@ -237,7 +237,18 @@ document.addEventListener('submit', (event) => {
   (async () => {
     try {
       const draft = await dbGet('current');
-      if (draft?.html) { main.innerHTML = draft.html; status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()}.`; }
+      if (draft?.html) {
+        const template = document.createElement('template');
+        template.innerHTML = draft.html;
+        const savedHome = template.content.querySelector('#home');
+        const currentHome = main.querySelector('#home');
+        if (savedHome && currentHome?.querySelector('.hero-content') && !savedHome.querySelector('.hero-content')) {
+          savedHome.innerHTML = currentHome.innerHTML;
+          savedHome.dataset.columns = '2';
+        }
+        main.innerHTML = template.innerHTML;
+        status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()} and upgraded to the latest layout.`;
+      }
       draftLoaded = true;
     } catch { draftLoaded = true; }
   })();
