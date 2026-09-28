@@ -17,8 +17,27 @@ document.addEventListener('submit', (event) => {
   const main = document.querySelector('main');
   let selected = null;
   let draftLoaded = false;
-  document.querySelector('#padding-x').closest('label').childNodes[0].textContent = 'Component gap X ';
-  document.querySelector('#padding-y').closest('label').childNodes[0].textContent = 'Component gap Y ';
+  const gapX = document.querySelector('#padding-x');
+  const gapY = document.querySelector('#padding-y');
+  gapX.closest('label').childNodes[0].textContent = 'Component gap X ';
+  gapY.closest('label').childNodes[0].textContent = 'Component gap Y ';
+  [gapX, gapY].forEach(slider => { slider.max = '120'; slider.step = '1'; });
+  const gapFineControls = document.createElement('div');
+  gapFineControls.className = 'gap-fine-controls';
+  gapFineControls.innerHTML = '<span>Closer</span><button type="button" data-gap="0">0</button><button type="button" data-gap="2">2</button><button type="button" data-gap="4">4</button><button type="button" data-gap="8">8</button><button type="button" data-gap="12">12</button><button type="button" data-gap="16">16</button><span>Custom</span><input id="gap-x-number" type="number" min="0" max="240" step="1" value="32" aria-label="Exact horizontal component gap"><input id="gap-y-number" type="number" min="0" max="240" step="1" value="32" aria-label="Exact vertical component gap">';
+  gapY.closest('label').after(gapFineControls);
+  gapFineControls.querySelectorAll('[data-gap]').forEach(button => button.addEventListener('click', () => {
+    gapX.value = button.dataset.gap; gapY.value = button.dataset.gap;
+    gapX.dispatchEvent(new Event('input', {bubbles:true})); gapY.dispatchEvent(new Event('input', {bubbles:true}));
+    document.querySelector('#gap-x-number').value = button.dataset.gap;
+    document.querySelector('#gap-y-number').value = button.dataset.gap;
+  }));
+  [['#gap-x-number',gapX],['#gap-y-number',gapY]].forEach(([id,slider]) => document.querySelector(id).addEventListener('input', event => {
+    slider.value = event.target.value;
+    slider.dispatchEvent(new Event('input', {bubbles:true}));
+  }));
+  gapX.addEventListener('input', () => document.querySelector('#gap-x-number').value = gapX.value);
+  gapY.addEventListener('input', () => document.querySelector('#gap-y-number').value = gapY.value);
 
   const openDb = () => new Promise((resolve, reject) => {
     const request = indexedDB.open('nani-portfolio-editor', 1);
