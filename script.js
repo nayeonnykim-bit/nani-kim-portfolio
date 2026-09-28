@@ -39,6 +39,26 @@ document.addEventListener('submit', (event) => {
   gapX.addEventListener('input', () => document.querySelector('#gap-x-number').value = gapX.value);
   gapY.addEventListener('input', () => document.querySelector('#gap-y-number').value = gapY.value);
 
+  const layoutGap = document.querySelector('#layout-gap');
+  layoutGap.min = '-100';
+  layoutGap.max = '240';
+  layoutGap.step = '1';
+  layoutGap.closest('label').childNodes[0].textContent = 'Section gap ';
+  const sectionGapFine = document.createElement('div');
+  sectionGapFine.className = 'section-gap-fine';
+  sectionGapFine.innerHTML = '<span>Overlap</span><button type="button" data-section-gap="-32">−32</button><button type="button" data-section-gap="-16">−16</button><button type="button" data-section-gap="-8">−8</button><button type="button" data-section-gap="0">0</button><button type="button" data-section-gap="8">8</button><button type="button" data-section-gap="16">16</button><label>Exact <input id="section-gap-number" type="number" min="-200" max="400" step="1" value="24" aria-label="Exact section gap"></label>';
+  layoutGap.closest('label').after(sectionGapFine);
+  sectionGapFine.querySelectorAll('[data-section-gap]').forEach(button => button.addEventListener('click', () => {
+    layoutGap.value = button.dataset.sectionGap;
+    layoutGap.dispatchEvent(new Event('input', {bubbles:true}));
+    document.querySelector('#section-gap-number').value = button.dataset.sectionGap;
+  }));
+  document.querySelector('#section-gap-number').addEventListener('input', event => {
+    layoutGap.value = event.target.value;
+    layoutGap.dispatchEvent(new Event('input', {bubbles:true}));
+  });
+  layoutGap.addEventListener('input', () => document.querySelector('#section-gap-number').value = layoutGap.value);
+
   const debugReadout = document.querySelector('.debug-readout');
   const debugActions = document.querySelector('.debug-actions');
   const tabBar = document.createElement('div');
@@ -179,12 +199,6 @@ document.addEventListener('submit', (event) => {
         else child.style.marginTop = value < 0 && index >= columns ? `${value}px` : '';
       });
     });
-    if (axis === 'y') {
-      main.style.display = 'flex';
-      main.style.flexDirection = 'column';
-      main.style.rowGap = `${Math.max(0, value)}px`;
-      [...main.children].forEach((child, index) => child.style.marginTop = value < 0 && index > 0 ? `${value}px` : '');
-    }
   };
   const apply = (id, fn, suffix = '') => document.querySelector(id).addEventListener('input', event => {
     fn(event.target.value);
@@ -194,7 +208,13 @@ document.addEventListener('submit', (event) => {
   });
   apply('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
   apply('#layout-width', value => { main.style.width = `${value}%`; main.style.marginLeft = 'auto'; main.style.marginRight = 'auto'; }, '%');
-  apply('#layout-gap', value => { main.style.display = 'flex'; main.style.flexDirection = 'column'; main.style.gap = `${value}px`; }, 'px');
+  apply('#layout-gap', value => {
+    const gap = Number(value);
+    main.style.display = 'flex';
+    main.style.flexDirection = 'column';
+    main.style.gap = `${Math.max(0, gap)}px`;
+    [...main.children].forEach((child, index) => child.style.marginTop = gap < 0 && index > 0 ? `${gap}px` : '');
+  }, 'px');
   apply('#padding-x', value => setGlobalComponentGap('x', value), 'px');
   apply('#padding-y', value => setGlobalComponentGap('y', value), 'px');
   apply('#margin-x', value => { main.style.marginLeft = `${value}px`; main.style.marginRight = `${value}px`; main.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
