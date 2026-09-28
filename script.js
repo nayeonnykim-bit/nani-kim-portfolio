@@ -17,6 +17,8 @@ document.addEventListener('submit', (event) => {
   const main = document.querySelector('main');
   let selected = null;
   let draftLoaded = false;
+  document.querySelector('#padding-x').closest('label').childNodes[0].textContent = 'Component gap X ';
+  document.querySelector('#padding-y').closest('label').childNodes[0].textContent = 'Component gap Y ';
 
   const openDb = () => new Promise((resolve, reject) => {
     const request = indexedDB.open('nani-portfolio-editor', 1);
@@ -119,8 +121,15 @@ document.addEventListener('submit', (event) => {
   apply('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
   apply('#layout-width', value => { main.style.width = `${value}%`; main.style.marginLeft = 'auto'; main.style.marginRight = 'auto'; }, '%');
   apply('#layout-gap', value => { main.style.display = 'flex'; main.style.flexDirection = 'column'; main.style.gap = `${value}px`; }, 'px');
-  apply('#padding-x', value => { main.style.paddingLeft = `${value}px`; main.style.paddingRight = `${value}px`; }, 'px');
-  apply('#padding-y', value => { main.style.paddingTop = `${value}px`; main.style.paddingBottom = `${value}px`; }, 'px');
+  apply('#padding-x', value => {
+    main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => layout.style.columnGap = `${value}px`);
+  }, 'px');
+  apply('#padding-y', value => {
+    main.style.display = 'flex';
+    main.style.flexDirection = 'column';
+    main.style.rowGap = `${value}px`;
+    main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => layout.style.rowGap = `${value}px`);
+  }, 'px');
   apply('#margin-x', value => { main.style.marginLeft = `${value}px`; main.style.marginRight = `${value}px`; main.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
   apply('#margin-y', value => { main.style.marginTop = `${value}px`; main.style.marginBottom = `${value}px`; }, 'px');
   apply('#layout-columns', value => { const grid = document.querySelector('[data-project-grid]'); grid.dataset.columns = value; grid.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
@@ -142,11 +151,14 @@ document.addEventListener('submit', (event) => {
     const values = {compact:[20,20,4,4],comfortable:[56,56,8,8],airy:[112,112,16,16]}[button.dataset.space];
     main.style.display = 'flex';
     main.style.flexDirection = 'column';
-    main.style.padding = `${values[1]}px ${values[0]}px`;
     main.style.margin = `${values[3]}px ${values[2]}px`;
     main.style.width = `calc(100% - ${values[2] * 2}px)`;
-    main.style.gap = `${values[3] * 2}px`;
-    status.textContent = `${button.textContent} spacing applied to the whole page canvas.`;
+    main.style.gap = `${values[1]}px`;
+    main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => {
+      layout.style.columnGap = `${values[0]}px`;
+      layout.style.rowGap = `${values[1]}px`;
+    });
+    status.textContent = `${button.textContent} component spacing applied across the website.`;
   }));
 
   document.querySelector('#media-upload').addEventListener('change', event => {
@@ -204,7 +216,7 @@ document.addEventListener('submit', (event) => {
 
   document.querySelector('#save-draft').addEventListener('click', async () => {
     selected?.classList.remove('debug-selected');
-    const draft = { html: main.innerHTML, savedAt: new Date().toISOString(), version: 1 };
+    const draft = { html: main.innerHTML, mainStyle: main.getAttribute('style') || '', bodyStyle: body.getAttribute('style') || '', savedAt: new Date().toISOString(), version: 2 };
     try { await dbSet('current', draft); status.textContent = `Saved ${new Date().toLocaleTimeString()}. Tell me “update” when ready to publish.`; }
     catch (error) { status.textContent = `Could not save: ${error.message}`; }
     selected?.classList.add('debug-selected');
@@ -236,6 +248,8 @@ document.addEventListener('submit', (event) => {
           savedWorks.dataset.columns = '1';
         }
         main.innerHTML = template.innerHTML;
+        if (draft.mainStyle) main.setAttribute('style', draft.mainStyle);
+        if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle);
         status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()} and upgraded to the latest layout.`;
       }
       draftLoaded = true;
