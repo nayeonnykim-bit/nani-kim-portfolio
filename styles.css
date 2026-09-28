@@ -4,6 +4,9 @@
 @media(max-width:800px){.panel{min-height:calc(100svh - 12px);margin:6px}.nav-wrap{top:17px}.nav-wrap nav{gap:0}.nav-wrap a{padding:7px 9px}.about,.contact{grid-template-columns:1fr}.about{gap:80px}.contact{gap:50px}.about h2,.contact h2{margin-bottom:40px}.contact-details{max-width:440px}.contact form{padding-top:0}.tags span{font-size:13px}.contact footer{margin-top:50px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project::before,.scroll-cue,.contact button{transition:none}}
 
+/* Project-grid column layouts controlled globally by the editor. */
+.works[data-columns="2"],.works[data-columns="3"],.works[data-columns="4"]{display:grid}.works[data-columns="2"] .project{min-height:72svh}.works[data-columns="3"] .project,.works[data-columns="4"] .project{min-height:56svh}.works[data-columns="2"] .project h2,.works[data-columns="3"] .project h2,.works[data-columns="4"] .project h2{font-size:clamp(30px,4vw,60px)}@media(max-width:760px){.works[data-columns]{grid-template-columns:1fr!important}.works[data-columns] .project{min-height:78svh}}
+
 /* Advanced editor controls and two-column landing. */
 .hero-content{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.55fr);gap:clamp(32px,8vw,130px);align-items:end;padding:clamp(36px,7vw,100px)}.hero .eyebrow{margin-bottom:20px}.hero-intro{font-size:clamp(20px,2.4vw,34px);line-height:1.15;letter-spacing:-.03em;margin:0 0 8px}@media(max-width:800px){.hero-content{grid-template-columns:1fr;align-content:end}.hero-intro{max-width:540px}}
 

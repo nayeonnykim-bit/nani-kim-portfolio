@@ -72,26 +72,7 @@ document.addEventListener('submit', (event) => {
     selected?.classList.remove('debug-selected');
     selected = el;
     selected?.classList.add('debug-selected');
-    selectionLabel.textContent = selected ? editableName(selected) : 'No section selected';
-    if (!selected) return;
-    const style = getComputedStyle(selected);
-    syncField('#layout-height', Math.min(1200, Math.max(120, Math.round(selected.getBoundingClientRect().height))), 'px');
-    syncField('#layout-width', Math.round(selected.getBoundingClientRect().width / innerWidth * 100), '%');
-    syncField('#layout-gap', numberFrom(style.gap, 0), 'px');
-    syncField('#padding-x', numberFrom(style.paddingLeft, 0), 'px');
-    syncField('#padding-y', numberFrom(style.paddingTop, 0), 'px');
-    syncField('#margin-x', numberFrom(style.marginLeft, 0), 'px');
-    syncField('#margin-y', numberFrom(style.marginTop, 0), 'px');
-    syncField('#layout-radius', numberFrom(style.borderRadius, 0), 'px');
-    syncField('#layout-opacity', Math.round(numberFrom(style.opacity, 1) * 100), '%');
-    syncField('#type-scale', numberFrom(selected.dataset.typeScale, 100), '%');
-    syncField('#line-height', numberFrom(selected.dataset.lineHeight, 120), '');
-    syncField('#letter-space', numberFrom(selected.dataset.letterSpace, 0), 'px');
-    document.querySelector('#layout-columns').value = selected.dataset.columns || '1';
-    document.querySelector('#layout-align').value = selected.style.textAlign || 'left';
-    document.querySelector('#layout-items').value = style.alignItems || 'start';
-    document.querySelector('#layout-justify').value = style.justifyContent || 'start';
-    document.querySelector('#layout-overflow').value = style.overflow || 'hidden';
+    selectionLabel.textContent = selected ? `Global controls · selected: ${editableName(selected)}` : 'Global site controls';
   };
 
   document.querySelector('.debug-trigger').addEventListener('click', () => toggleEditor(true));
@@ -128,41 +109,43 @@ document.addEventListener('submit', (event) => {
   };
 
   document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => makeSection(button.dataset.add)));
+  const panels = () => [...main.querySelectorAll('.panel')];
   const apply = (id, fn, suffix = '') => document.querySelector(id).addEventListener('input', event => {
-    if (!selected) { status.textContent = 'Select a section first.'; return; }
     fn(event.target.value);
     const output = document.querySelector(`${id}-value`);
     if (output) output.value = `${event.target.value}${suffix}`;
+    status.textContent = 'Global style changed. Save the draft to keep it.';
   });
-  apply('#layout-height', value => selected.style.minHeight = `${value}px`, 'px');
-  apply('#layout-width', value => { selected.style.width = `${value}%`; selected.style.marginLeft = 'auto'; selected.style.marginRight = 'auto'; }, '%');
-  apply('#layout-gap', value => selected.style.gap = `${value}px`, 'px');
-  apply('#padding-x', value => { selected.style.paddingLeft = `${value}px`; selected.style.paddingRight = `${value}px`; }, 'px');
-  apply('#padding-y', value => { selected.style.paddingTop = `${value}px`; selected.style.paddingBottom = `${value}px`; }, 'px');
-  apply('#margin-x', value => { selected.style.marginLeft = `${value}px`; selected.style.marginRight = `${value}px`; selected.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
-  apply('#margin-y', value => { selected.style.marginTop = `${value}px`; selected.style.marginBottom = `${value}px`; }, 'px');
-  apply('#layout-columns', value => { selected.dataset.columns = value; selected.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
-  apply('#layout-align', value => selected.style.textAlign = value);
-  apply('#layout-items', value => selected.style.alignItems = value);
-  apply('#layout-justify', value => selected.style.justifyContent = value);
-  apply('#layout-radius', value => selected.style.borderRadius = `${value}px`, 'px');
-  apply('#layout-opacity', value => selected.style.opacity = value / 100, '%');
-  apply('#layout-overflow', value => selected.style.overflow = value);
-  apply('#type-scale', value => { selected.dataset.typeScale = value; selected.style.fontSize = `${value}%`; }, '%');
-  apply('#line-height', value => { selected.dataset.lineHeight = value; selected.style.lineHeight = value / 100; });
-  apply('#letter-space', value => { selected.dataset.letterSpace = value; selected.style.letterSpacing = `${value}px`; }, 'px');
-  apply('#layout-bg', value => selected.style.background = value);
-  apply('#layout-color', value => selected.style.color = value);
-  apply('#media-fit', value => selected.querySelectorAll('img,video').forEach(media => media.style.objectFit = value));
-  apply('#media-position', value => selected.querySelectorAll('img,video').forEach(media => media.style.objectPosition = value));
+  apply('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
+  apply('#layout-width', value => panels().forEach(panel => { panel.style.width = `calc(${value}% - 16px)`; panel.style.marginLeft = 'auto'; panel.style.marginRight = 'auto'; }), '%');
+  apply('#layout-gap', value => { main.style.setProperty('--editor-gap', `${value}px`); document.querySelector('.works').style.gap = `${value}px`; }, 'px');
+  apply('#padding-x', value => panels().forEach(panel => { panel.style.paddingLeft = `${value}px`; panel.style.paddingRight = `${value}px`; }), 'px');
+  apply('#padding-y', value => panels().forEach(panel => { panel.style.paddingTop = `${value}px`; panel.style.paddingBottom = `${value}px`; }), 'px');
+  apply('#margin-x', value => panels().forEach(panel => { panel.style.marginLeft = `${value}px`; panel.style.marginRight = `${value}px`; panel.style.width = `calc(100% - ${value * 2}px)`; }), 'px');
+  apply('#margin-y', value => panels().forEach(panel => { panel.style.marginTop = `${value}px`; panel.style.marginBottom = `${value}px`; }), 'px');
+  apply('#layout-columns', value => { const grid = document.querySelector('[data-project-grid]'); grid.dataset.columns = value; grid.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
+  apply('#layout-align', value => panels().forEach(panel => panel.style.textAlign = value));
+  apply('#layout-items', value => panels().forEach(panel => panel.style.alignItems = value));
+  apply('#layout-justify', value => panels().forEach(panel => panel.style.justifyContent = value));
+  apply('#layout-radius', value => panels().forEach(panel => panel.style.borderRadius = `${value}px`), 'px');
+  apply('#layout-opacity', value => panels().forEach(panel => panel.style.opacity = value / 100), '%');
+  apply('#layout-overflow', value => panels().forEach(panel => panel.style.overflow = value));
+  apply('#type-scale', value => { main.dataset.typeScale = value; main.style.fontSize = `${value}%`; }, '%');
+  apply('#line-height', value => { main.dataset.lineHeight = value; main.style.lineHeight = value / 100; });
+  apply('#letter-space', value => { main.dataset.letterSpace = value; main.style.letterSpacing = `${value}px`; }, 'px');
+  apply('#layout-bg', value => { body.style.background = value; panels().filter(panel => !panel.classList.contains('project') && !panel.classList.contains('hero')).forEach(panel => panel.style.backgroundColor = value); });
+  apply('#layout-color', value => { main.style.color = value; panels().forEach(panel => panel.style.color = value); });
+  apply('#media-fit', value => main.querySelectorAll('img,video').forEach(media => media.style.objectFit = value));
+  apply('#media-position', value => main.querySelectorAll('img,video').forEach(media => media.style.objectPosition = value));
 
   document.querySelectorAll('[data-space]').forEach(button => button.addEventListener('click', () => {
-    if (!selected) { status.textContent = 'Select a section first.'; return; }
     const values = {compact:[20,20,4,4],comfortable:[56,56,8,8],airy:[112,112,16,16]}[button.dataset.space];
-    selected.style.padding = `${values[1]}px ${values[0]}px`;
-    selected.style.margin = `${values[3]}px ${values[2]}px`;
-    selected.style.width = `calc(100% - ${values[2] * 2}px)`;
-    selectSection(selected);
+    panels().forEach(panel => {
+      panel.style.padding = `${values[1]}px ${values[0]}px`;
+      panel.style.margin = `${values[3]}px ${values[2]}px`;
+      panel.style.width = `calc(100% - ${values[2] * 2}px)`;
+    });
+    status.textContent = `${button.textContent} spacing applied globally.`;
   }));
 
   document.querySelector('#media-upload').addEventListener('change', event => {
@@ -245,6 +228,11 @@ document.addEventListener('submit', (event) => {
         if (savedHome && currentHome?.querySelector('.hero-content') && !savedHome.querySelector('.hero-content')) {
           savedHome.innerHTML = currentHome.innerHTML;
           savedHome.dataset.columns = '2';
+        }
+        const savedWorks = template.content.querySelector('#works');
+        if (savedWorks && !savedWorks.hasAttribute('data-project-grid')) {
+          savedWorks.dataset.projectGrid = '';
+          savedWorks.dataset.columns = '1';
         }
         main.innerHTML = template.innerHTML;
         status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()} and upgraded to the latest layout.`;
