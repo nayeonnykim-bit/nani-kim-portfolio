@@ -117,12 +117,12 @@ document.addEventListener('submit', (event) => {
     status.textContent = 'Global style changed. Save the draft to keep it.';
   });
   apply('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
-  apply('#layout-width', value => panels().forEach(panel => { panel.style.width = `calc(${value}% - 16px)`; panel.style.marginLeft = 'auto'; panel.style.marginRight = 'auto'; }), '%');
-  apply('#layout-gap', value => { main.style.setProperty('--editor-gap', `${value}px`); document.querySelector('.works').style.gap = `${value}px`; }, 'px');
-  apply('#padding-x', value => panels().forEach(panel => { panel.style.paddingLeft = `${value}px`; panel.style.paddingRight = `${value}px`; }), 'px');
-  apply('#padding-y', value => panels().forEach(panel => { panel.style.paddingTop = `${value}px`; panel.style.paddingBottom = `${value}px`; }), 'px');
-  apply('#margin-x', value => panels().forEach(panel => { panel.style.marginLeft = `${value}px`; panel.style.marginRight = `${value}px`; panel.style.width = `calc(100% - ${value * 2}px)`; }), 'px');
-  apply('#margin-y', value => panels().forEach(panel => { panel.style.marginTop = `${value}px`; panel.style.marginBottom = `${value}px`; }), 'px');
+  apply('#layout-width', value => { main.style.width = `${value}%`; main.style.marginLeft = 'auto'; main.style.marginRight = 'auto'; }, '%');
+  apply('#layout-gap', value => { main.style.display = 'flex'; main.style.flexDirection = 'column'; main.style.gap = `${value}px`; }, 'px');
+  apply('#padding-x', value => { main.style.paddingLeft = `${value}px`; main.style.paddingRight = `${value}px`; }, 'px');
+  apply('#padding-y', value => { main.style.paddingTop = `${value}px`; main.style.paddingBottom = `${value}px`; }, 'px');
+  apply('#margin-x', value => { main.style.marginLeft = `${value}px`; main.style.marginRight = `${value}px`; main.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
+  apply('#margin-y', value => { main.style.marginTop = `${value}px`; main.style.marginBottom = `${value}px`; }, 'px');
   apply('#layout-columns', value => { const grid = document.querySelector('[data-project-grid]'); grid.dataset.columns = value; grid.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
   apply('#layout-align', value => panels().forEach(panel => panel.style.textAlign = value));
   apply('#layout-items', value => panels().forEach(panel => panel.style.alignItems = value));
@@ -140,12 +140,13 @@ document.addEventListener('submit', (event) => {
 
   document.querySelectorAll('[data-space]').forEach(button => button.addEventListener('click', () => {
     const values = {compact:[20,20,4,4],comfortable:[56,56,8,8],airy:[112,112,16,16]}[button.dataset.space];
-    panels().forEach(panel => {
-      panel.style.padding = `${values[1]}px ${values[0]}px`;
-      panel.style.margin = `${values[3]}px ${values[2]}px`;
-      panel.style.width = `calc(100% - ${values[2] * 2}px)`;
-    });
-    status.textContent = `${button.textContent} spacing applied globally.`;
+    main.style.display = 'flex';
+    main.style.flexDirection = 'column';
+    main.style.padding = `${values[1]}px ${values[0]}px`;
+    main.style.margin = `${values[3]}px ${values[2]}px`;
+    main.style.width = `calc(100% - ${values[2] * 2}px)`;
+    main.style.gap = `${values[3] * 2}px`;
+    status.textContent = `${button.textContent} spacing applied to the whole page canvas.`;
   }));
 
   document.querySelector('#media-upload').addEventListener('change', event => {
