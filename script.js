@@ -21,10 +21,10 @@ document.addEventListener('submit', (event) => {
   const gapY = document.querySelector('#padding-y');
   gapX.closest('label').childNodes[0].textContent = 'Component gap X ';
   gapY.closest('label').childNodes[0].textContent = 'Component gap Y ';
-  [gapX, gapY].forEach(slider => { slider.max = '120'; slider.step = '1'; });
+  [gapX, gapY].forEach(slider => { slider.min = '-40'; slider.max = '120'; slider.step = '1'; });
   const gapFineControls = document.createElement('div');
   gapFineControls.className = 'gap-fine-controls';
-  gapFineControls.innerHTML = '<span>Closer</span><button type="button" data-gap="0">0</button><button type="button" data-gap="2">2</button><button type="button" data-gap="4">4</button><button type="button" data-gap="8">8</button><button type="button" data-gap="12">12</button><button type="button" data-gap="16">16</button><span>Custom</span><input id="gap-x-number" type="number" min="0" max="240" step="1" value="32" aria-label="Exact horizontal component gap"><input id="gap-y-number" type="number" min="0" max="240" step="1" value="32" aria-label="Exact vertical component gap">';
+  gapFineControls.innerHTML = '<span>Overlap</span><button type="button" data-gap="-16">−16</button><button type="button" data-gap="-8">−8</button><button type="button" data-gap="-4">−4</button><button type="button" data-gap="0">0</button><button type="button" data-gap="4">4</button><button type="button" data-gap="8">8</button><span>Exact X/Y</span><input id="gap-x-number" type="number" min="-100" max="240" step="1" value="32" aria-label="Exact horizontal component gap"><input id="gap-y-number" type="number" min="-100" max="240" step="1" value="32" aria-label="Exact vertical component gap">';
   gapY.closest('label').after(gapFineControls);
   gapFineControls.querySelectorAll('[data-gap]').forEach(button => button.addEventListener('click', () => {
     gapX.value = button.dataset.gap; gapY.value = button.dataset.gap;
@@ -38,6 +38,27 @@ document.addEventListener('submit', (event) => {
   }));
   gapX.addEventListener('input', () => document.querySelector('#gap-x-number').value = gapX.value);
   gapY.addEventListener('input', () => document.querySelector('#gap-y-number').value = gapY.value);
+
+  const debugReadout = document.querySelector('.debug-readout');
+  const debugActions = document.querySelector('.debug-actions');
+  const tabBar = document.createElement('div');
+  tabBar.className = 'debug-tabs';
+  tabBar.innerHTML = '<button type="button" class="active" data-editor-tab="global">Global</button><button type="button" data-editor-tab="component">Component</button>';
+  const globalPane = document.createElement('div');
+  globalPane.className = 'debug-pane active';
+  globalPane.dataset.pane = 'global';
+  const componentPane = document.createElement('div');
+  componentPane.className = 'debug-pane';
+  componentPane.dataset.pane = 'component';
+  componentPane.innerHTML = '<div class="component-help">Select any section or project card on the page, then adjust it here.</div><div class="debug-group"><p>Component spacing</p><label>Padding X <input id="c-padding-x" type="range" min="0" max="160" value="0"><output id="c-padding-x-value">0px</output></label><label>Padding Y <input id="c-padding-y" type="range" min="0" max="160" value="0"><output id="c-padding-y-value">0px</output></label><label>Margin X <input id="c-margin-x" type="range" min="-100" max="160" value="0"><output id="c-margin-x-value">0px</output></label><label>Margin Y <input id="c-margin-y" type="range" min="-100" max="160" value="0"><output id="c-margin-y-value">0px</output></label><label>Inner gap <input id="c-gap" type="range" min="-60" max="160" value="0"><output id="c-gap-value">0px</output></label></div><div class="debug-group"><p>Component size</p><label>Width <input id="c-width" type="range" min="20" max="100" value="100"><output id="c-width-value">100%</output></label><label>Min height <input id="c-height" type="range" min="80" max="1200" value="400"><output id="c-height-value">400px</output></label><label>Radius <input id="c-radius" type="range" min="0" max="100" value="12"><output id="c-radius-value">12px</output></label><label>Opacity <input id="c-opacity" type="range" min="10" max="100" value="100"><output id="c-opacity-value">100%</output></label></div><div class="debug-group"><p>Component appearance</p><label>Align <select id="c-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label>Background <input id="c-bg" type="color" value="#111111"></label><label>Text <input id="c-color" type="color" value="#ffffff"></label></div>';
+  menu.insertBefore(tabBar, debugReadout.nextSibling);
+  menu.insertBefore(globalPane, debugActions);
+  menu.insertBefore(componentPane, debugActions);
+  [...menu.querySelectorAll(':scope > .debug-group')].forEach(group => globalPane.append(group));
+  tabBar.querySelectorAll('[data-editor-tab]').forEach(button => button.addEventListener('click', () => {
+    tabBar.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === button));
+    [globalPane,componentPane].forEach(pane => pane.classList.toggle('active', pane.dataset.pane === button.dataset.editorTab));
+  }));
 
   const openDb = () => new Promise((resolve, reject) => {
     const request = indexedDB.open('nani-portfolio-editor', 1);
@@ -89,11 +110,26 @@ document.addEventListener('submit', (event) => {
     const output = document.querySelector(`${id}-value`);
     if (output) output.value = `${value}${suffix}`;
   };
+  const syncComponentFields = (element) => {
+    if (!element) return;
+    const style = getComputedStyle(element);
+    syncField('#c-padding-x', numberFrom(style.paddingLeft, 0), 'px');
+    syncField('#c-padding-y', numberFrom(style.paddingTop, 0), 'px');
+    syncField('#c-margin-x', numberFrom(style.marginLeft, 0), 'px');
+    syncField('#c-margin-y', numberFrom(style.marginTop, 0), 'px');
+    syncField('#c-gap', numberFrom(style.gap, 0), 'px');
+    syncField('#c-width', Math.min(100, Math.round(element.getBoundingClientRect().width / innerWidth * 100)), '%');
+    syncField('#c-height', Math.min(1200, Math.round(element.getBoundingClientRect().height)), 'px');
+    syncField('#c-radius', numberFrom(style.borderRadius, 0), 'px');
+    syncField('#c-opacity', Math.round(numberFrom(style.opacity, 1) * 100), '%');
+    document.querySelector('#c-align').value = style.textAlign || 'left';
+  };
   const selectSection = (el) => {
     selected?.classList.remove('debug-selected');
     selected = el;
     selected?.classList.add('debug-selected');
     selectionLabel.textContent = selected ? `Global controls · selected: ${editableName(selected)}` : 'Global site controls';
+    syncComponentFields(selected);
   };
 
   document.querySelector('.debug-trigger').addEventListener('click', () => toggleEditor(true));
@@ -131,6 +167,25 @@ document.addEventListener('submit', (event) => {
 
   document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => makeSection(button.dataset.add)));
   const panels = () => [...main.querySelectorAll('.panel')];
+  const setGlobalComponentGap = (axis, rawValue) => {
+    const value = Number(rawValue);
+    const layouts = [...main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]')];
+    layouts.forEach(layout => {
+      const isX = axis === 'x';
+      layout.style[isX ? 'columnGap' : 'rowGap'] = `${Math.max(0, value)}px`;
+      const columns = Math.max(1, Number(layout.dataset.columns) || (layout.classList.contains('works') ? 1 : 2));
+      [...layout.children].forEach((child, index) => {
+        if (isX) child.style.marginLeft = value < 0 && index % columns !== 0 ? `${value}px` : '';
+        else child.style.marginTop = value < 0 && index >= columns ? `${value}px` : '';
+      });
+    });
+    if (axis === 'y') {
+      main.style.display = 'flex';
+      main.style.flexDirection = 'column';
+      main.style.rowGap = `${Math.max(0, value)}px`;
+      [...main.children].forEach((child, index) => child.style.marginTop = value < 0 && index > 0 ? `${value}px` : '');
+    }
+  };
   const apply = (id, fn, suffix = '') => document.querySelector(id).addEventListener('input', event => {
     fn(event.target.value);
     const output = document.querySelector(`${id}-value`);
@@ -140,15 +195,8 @@ document.addEventListener('submit', (event) => {
   apply('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
   apply('#layout-width', value => { main.style.width = `${value}%`; main.style.marginLeft = 'auto'; main.style.marginRight = 'auto'; }, '%');
   apply('#layout-gap', value => { main.style.display = 'flex'; main.style.flexDirection = 'column'; main.style.gap = `${value}px`; }, 'px');
-  apply('#padding-x', value => {
-    main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => layout.style.columnGap = `${value}px`);
-  }, 'px');
-  apply('#padding-y', value => {
-    main.style.display = 'flex';
-    main.style.flexDirection = 'column';
-    main.style.rowGap = `${value}px`;
-    main.querySelectorAll('.works,.about,.contact,.hero-content,[data-columns]').forEach(layout => layout.style.rowGap = `${value}px`);
-  }, 'px');
+  apply('#padding-x', value => setGlobalComponentGap('x', value), 'px');
+  apply('#padding-y', value => setGlobalComponentGap('y', value), 'px');
   apply('#margin-x', value => { main.style.marginLeft = `${value}px`; main.style.marginRight = `${value}px`; main.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
   apply('#margin-y', value => { main.style.marginTop = `${value}px`; main.style.marginBottom = `${value}px`; }, 'px');
   apply('#layout-columns', value => { const grid = document.querySelector('[data-project-grid]'); grid.dataset.columns = value; grid.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
@@ -165,6 +213,30 @@ document.addEventListener('submit', (event) => {
   apply('#layout-color', value => { main.style.color = value; panels().forEach(panel => panel.style.color = value); });
   apply('#media-fit', value => main.querySelectorAll('img,video').forEach(media => media.style.objectFit = value));
   apply('#media-position', value => main.querySelectorAll('img,video').forEach(media => media.style.objectPosition = value));
+
+  const applyComponent = (id, fn, suffix = '') => document.querySelector(id).addEventListener('input', event => {
+    if (!selected) { status.textContent = 'Select a component on the page first.'; return; }
+    fn(event.target.value);
+    const output = document.querySelector(`${id}-value`);
+    if (output) output.value = `${event.target.value}${suffix}`;
+    status.textContent = `Adjusted selected component: ${editableName(selected)}.`;
+  });
+  applyComponent('#c-padding-x', value => { selected.style.paddingLeft = `${value}px`; selected.style.paddingRight = `${value}px`; }, 'px');
+  applyComponent('#c-padding-y', value => { selected.style.paddingTop = `${value}px`; selected.style.paddingBottom = `${value}px`; }, 'px');
+  applyComponent('#c-margin-x', value => { selected.style.marginLeft = `${value}px`; selected.style.marginRight = `${value}px`; }, 'px');
+  applyComponent('#c-margin-y', value => { selected.style.marginTop = `${value}px`; selected.style.marginBottom = `${value}px`; }, 'px');
+  applyComponent('#c-gap', value => {
+    const gap = Number(value);
+    selected.style.gap = `${Math.max(0, gap)}px`;
+    [...selected.children].forEach((child, index) => child.style.marginTop = gap < 0 && index > 0 ? `${gap}px` : '');
+  }, 'px');
+  applyComponent('#c-width', value => { selected.style.width = `${value}%`; }, '%');
+  applyComponent('#c-height', value => { selected.style.minHeight = `${value}px`; }, 'px');
+  applyComponent('#c-radius', value => { selected.style.borderRadius = `${value}px`; }, 'px');
+  applyComponent('#c-opacity', value => { selected.style.opacity = value / 100; }, '%');
+  applyComponent('#c-align', value => { selected.style.textAlign = value; });
+  applyComponent('#c-bg', value => { selected.style.background = value; });
+  applyComponent('#c-color', value => { selected.style.color = value; });
 
   document.querySelectorAll('[data-space]').forEach(button => button.addEventListener('click', () => {
     const values = {compact:[20,20,4,4],comfortable:[56,56,8,8],airy:[112,112,16,16]}[button.dataset.space];
