@@ -266,6 +266,10 @@ document.addEventListener('submit', (event) => {
           savedWorks.dataset.projectGrid = '';
           savedWorks.dataset.columns = '1';
         }
+        ['./oclock.html','./bloom.html','./pulse.html','./canvas.html'].forEach((href, index) => {
+          const card = template.content.querySelectorAll('.project')[index];
+          if (card) card.setAttribute('href', href);
+        });
         main.innerHTML = template.innerHTML;
         if (draft.mainStyle) main.setAttribute('style', draft.mainStyle);
         if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle);
