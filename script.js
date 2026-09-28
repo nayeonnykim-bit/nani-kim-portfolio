@@ -60,16 +60,38 @@ document.addEventListener('submit', (event) => {
   };
 
   const editableName = (el) => el?.id || el?.querySelector('h1,h2,h3')?.textContent?.trim() || 'Custom section';
+  const numberFrom = (value, fallback = 0) => Number.parseFloat(value) || fallback;
+  const syncField = (id, value, suffix = '') => {
+    const input = document.querySelector(id);
+    if (!input) return;
+    input.value = value;
+    const output = document.querySelector(`${id}-value`);
+    if (output) output.value = `${value}${suffix}`;
+  };
   const selectSection = (el) => {
     selected?.classList.remove('debug-selected');
     selected = el;
     selected?.classList.add('debug-selected');
     selectionLabel.textContent = selected ? editableName(selected) : 'No section selected';
     if (!selected) return;
-    document.querySelector('#layout-height').value = Math.min(1200, Math.max(240, Math.round(selected.getBoundingClientRect().height)));
-    document.querySelector('#layout-padding').value = parseInt(getComputedStyle(selected).paddingTop) || 0;
+    const style = getComputedStyle(selected);
+    syncField('#layout-height', Math.min(1200, Math.max(120, Math.round(selected.getBoundingClientRect().height))), 'px');
+    syncField('#layout-width', Math.round(selected.getBoundingClientRect().width / innerWidth * 100), '%');
+    syncField('#layout-gap', numberFrom(style.gap, 0), 'px');
+    syncField('#padding-x', numberFrom(style.paddingLeft, 0), 'px');
+    syncField('#padding-y', numberFrom(style.paddingTop, 0), 'px');
+    syncField('#margin-x', numberFrom(style.marginLeft, 0), 'px');
+    syncField('#margin-y', numberFrom(style.marginTop, 0), 'px');
+    syncField('#layout-radius', numberFrom(style.borderRadius, 0), 'px');
+    syncField('#layout-opacity', Math.round(numberFrom(style.opacity, 1) * 100), '%');
+    syncField('#type-scale', numberFrom(selected.dataset.typeScale, 100), '%');
+    syncField('#line-height', numberFrom(selected.dataset.lineHeight, 120), '');
+    syncField('#letter-space', numberFrom(selected.dataset.letterSpace, 0), 'px');
     document.querySelector('#layout-columns').value = selected.dataset.columns || '1';
     document.querySelector('#layout-align').value = selected.style.textAlign || 'left';
+    document.querySelector('#layout-items').value = style.alignItems || 'start';
+    document.querySelector('#layout-justify').value = style.justifyContent || 'start';
+    document.querySelector('#layout-overflow').value = style.overflow || 'hidden';
   };
 
   document.querySelector('.debug-trigger').addEventListener('click', () => toggleEditor(true));
@@ -106,13 +128,42 @@ document.addEventListener('submit', (event) => {
   };
 
   document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => makeSection(button.dataset.add)));
-  const apply = (id, fn) => document.querySelector(id).addEventListener('input', event => selected && fn(event.target.value));
-  apply('#layout-height', value => selected.style.minHeight = `${value}px`);
-  apply('#layout-padding', value => selected.style.padding = `${value}px`);
+  const apply = (id, fn, suffix = '') => document.querySelector(id).addEventListener('input', event => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    fn(event.target.value);
+    const output = document.querySelector(`${id}-value`);
+    if (output) output.value = `${event.target.value}${suffix}`;
+  });
+  apply('#layout-height', value => selected.style.minHeight = `${value}px`, 'px');
+  apply('#layout-width', value => { selected.style.width = `${value}%`; selected.style.marginLeft = 'auto'; selected.style.marginRight = 'auto'; }, '%');
+  apply('#layout-gap', value => selected.style.gap = `${value}px`, 'px');
+  apply('#padding-x', value => { selected.style.paddingLeft = `${value}px`; selected.style.paddingRight = `${value}px`; }, 'px');
+  apply('#padding-y', value => { selected.style.paddingTop = `${value}px`; selected.style.paddingBottom = `${value}px`; }, 'px');
+  apply('#margin-x', value => { selected.style.marginLeft = `${value}px`; selected.style.marginRight = `${value}px`; selected.style.width = `calc(100% - ${value * 2}px)`; }, 'px');
+  apply('#margin-y', value => { selected.style.marginTop = `${value}px`; selected.style.marginBottom = `${value}px`; }, 'px');
   apply('#layout-columns', value => { selected.dataset.columns = value; selected.style.gridTemplateColumns = value === '1' ? '1fr' : `repeat(${value},minmax(0,1fr))`; });
   apply('#layout-align', value => selected.style.textAlign = value);
+  apply('#layout-items', value => selected.style.alignItems = value);
+  apply('#layout-justify', value => selected.style.justifyContent = value);
+  apply('#layout-radius', value => selected.style.borderRadius = `${value}px`, 'px');
+  apply('#layout-opacity', value => selected.style.opacity = value / 100, '%');
+  apply('#layout-overflow', value => selected.style.overflow = value);
+  apply('#type-scale', value => { selected.dataset.typeScale = value; selected.style.fontSize = `${value}%`; }, '%');
+  apply('#line-height', value => { selected.dataset.lineHeight = value; selected.style.lineHeight = value / 100; });
+  apply('#letter-space', value => { selected.dataset.letterSpace = value; selected.style.letterSpacing = `${value}px`; }, 'px');
   apply('#layout-bg', value => selected.style.background = value);
   apply('#layout-color', value => selected.style.color = value);
+  apply('#media-fit', value => selected.querySelectorAll('img,video').forEach(media => media.style.objectFit = value));
+  apply('#media-position', value => selected.querySelectorAll('img,video').forEach(media => media.style.objectPosition = value));
+
+  document.querySelectorAll('[data-space]').forEach(button => button.addEventListener('click', () => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    const values = {compact:[20,20,4,4],comfortable:[56,56,8,8],airy:[112,112,16,16]}[button.dataset.space];
+    selected.style.padding = `${values[1]}px ${values[0]}px`;
+    selected.style.margin = `${values[3]}px ${values[2]}px`;
+    selected.style.width = `calc(100% - ${values[2] * 2}px)`;
+    selectSection(selected);
+  }));
 
   document.querySelector('#media-upload').addEventListener('change', event => {
     const file = event.target.files?.[0];
@@ -132,8 +183,36 @@ document.addEventListener('submit', (event) => {
   });
 
   document.querySelector('#remove-section').addEventListener('click', () => {
-    if (!selected || !selected.dataset.editorCreated) { status.textContent = 'Only sections added in the editor can be removed.'; return; }
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
     selected.remove(); selectSection(null); status.textContent = 'Section removed. Save to keep this change.';
+  });
+  document.querySelector('#duplicate-section').addEventListener('click', () => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    const clone = selected.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.dataset.editorCreated = clone.dataset.editorCreated || 'duplicate';
+    selected.after(clone);
+    selectSection(clone);
+    status.textContent = 'Section duplicated.';
+  });
+  document.querySelector('#move-up').addEventListener('click', () => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    const previous = selected.previousElementSibling;
+    if (previous) previous.before(selected);
+  });
+  document.querySelector('#move-down').addEventListener('click', () => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    const next = selected.nextElementSibling;
+    if (next) next.after(selected);
+  });
+  document.querySelector('#reset-section').addEventListener('click', () => {
+    if (!selected) { status.textContent = 'Select a section first.'; return; }
+    selected.removeAttribute('style');
+    delete selected.dataset.typeScale;
+    delete selected.dataset.lineHeight;
+    delete selected.dataset.letterSpace;
+    selectSection(selected);
+    status.textContent = 'Selected section styles reset.';
   });
   document.querySelector('#toggle-grid').addEventListener('change', event => body.classList.toggle('debug-grid-overlay', event.target.checked));
   document.querySelector('#toggle-outline').addEventListener('change', event => body.classList.toggle('debug-outlines', event.target.checked));
