@@ -86,7 +86,15 @@ document.addEventListener('submit', (event) => {
   const rgbToHex = (value, fallback) => { const match = value?.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/); return match ? `#${match.slice(1).map(n => Number(n).toString(16).padStart(2, '0')).join('')}` : fallback; };
   const setOutput = (input, suffix = '') => { const output = $(`#${input.id}-value`); if (output) output.value = `${input.value}${suffix}`; };
   const activateTab = name => { menu.querySelectorAll('[data-editor-tab]').forEach(button => button.classList.toggle('active', button.dataset.editorTab === name)); menu.querySelectorAll('.debug-pane').forEach(pane => pane.classList.toggle('active', pane.dataset.pane === name)); };
-  const toggleEditor = force => { const open = typeof force === 'boolean' ? force : !body.classList.contains('debug-open'); body.classList.toggle('debug-open', open); body.classList.toggle('debug-editing', open); menu.setAttribute('aria-hidden', String(!open)); };
+  const setTextEditMode = open => main.querySelectorAll('[data-editable-text]').forEach(element => {
+    element.contentEditable = String(open);
+    element.spellcheck = false;
+    if (element.dataset.textEditorBound) return;
+    element.dataset.textEditorBound = 'true';
+    element.addEventListener('input', () => { status.textContent = 'Landing text changed. Save the draft to keep it.'; });
+    element.addEventListener('blur', recordHistory);
+  });
+  const toggleEditor = force => { const open = typeof force === 'boolean' ? force : !body.classList.contains('debug-open'); body.classList.toggle('debug-open', open); body.classList.toggle('debug-editing', open); menu.setAttribute('aria-hidden', String(!open)); setTextEditMode(open); };
   const updateTransform = element => { element.style.transform = `translate3d(${element.dataset.tx || 0}px,${element.dataset.ty || 0}px,0) rotate(${element.dataset.rotate || 0}deg) scale(${(element.dataset.scale || 100) / 100})`; };
   const updateEffects = element => { element.style.filter = `blur(${element.dataset.blur || 0}px) saturate(${element.dataset.saturate || 100}%)`; const shadow = Number(element.dataset.shadow || 0); element.style.boxShadow = shadow ? `0 ${Math.round(shadow / 2)}px ${shadow}px rgba(0,0,0,.42)` : ''; };
   const updateHover = element => { element.classList.add('editor-hoverable'); element.style.setProperty('--hover-y', `${element.dataset.hoverY || 0}px`); element.style.setProperty('--hover-scale', (element.dataset.hoverScale || 100) / 100); element.style.setProperty('--hover-rotate', `${element.dataset.hoverRotate || 0}deg`); element.style.setProperty('--hover-glow', `${element.dataset.hoverGlow || 0}px`); element.style.setProperty('--hover-duration', `${element.dataset.hoverDuration || 350}ms`); };
@@ -105,7 +113,7 @@ document.addEventListener('submit', (event) => {
   menu.querySelectorAll('[data-editor-tab]').forEach(button => button.addEventListener('click', () => activateTab(button.dataset.editorTab)));
   $('#undo-change').addEventListener('click', () => travelHistory(-1)); $('#redo-change').addEventListener('click', () => travelHistory(1));
   addEventListener('keydown', event => { if (/input|textarea|select/i.test(event.target.tagName) || event.target.isContentEditable) return; if (event.key.toLowerCase() === 'd' && !event.metaKey && !event.ctrlKey) toggleEditor(); if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); travelHistory(event.shiftKey ? 1 : -1); } if (event.key === 'Escape') toggleEditor(false); });
-  main.addEventListener('click', event => { if (!body.classList.contains('debug-editing')) return; const section = event.target.closest('[data-editable-section]'); if (!section) return; event.preventDefault(); event.stopPropagation(); selectSection(section); }, true);
+  main.addEventListener('click', event => { if (!body.classList.contains('debug-editing')) return; const section = event.target.closest('[data-editable-section]'); if (!section) return; const text = event.target.closest('[data-editable-text]'); if (text) { selectSection(section); return; } event.preventDefault(); event.stopPropagation(); selectSection(section); }, true);
 
   const bind = (id, handler, suffix = '') => { const input = $(id); input.addEventListener('input', () => { handler(input.value); setOutput(input, suffix); status.textContent = id.startsWith('#c-') || id.startsWith('#h-') ? `Adjusted ${editableName(selected)}.` : 'Canvas settings changed.'; }); input.addEventListener('change', recordHistory); };
   bind('#layout-height', value => panels().forEach(panel => panel.style.minHeight = `${value}px`), 'px');
