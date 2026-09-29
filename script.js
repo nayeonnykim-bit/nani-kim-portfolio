@@ -22,6 +22,11 @@ document.addEventListener('submit', (event) => {
       });
     });
   };
+  const ensureLandingTextTargets = () => {
+    main.querySelector('.hero h1')?.setAttribute('data-editable-text', '');
+    main.querySelector('.hero-intro')?.setAttribute('data-editable-text', '');
+    main.querySelector('.hero .eyebrow')?.setAttribute('data-editable-text', '');
+  };
   const installGapControls = () => {
     const gapX = $('#padding-x'), gapY = $('#padding-y'), layoutGap = $('#layout-gap');
     gapX.closest('label').childNodes[0].textContent = 'Component gap X ';
@@ -77,7 +82,8 @@ document.addEventListener('submit', (event) => {
   const updateHistoryButtons = () => { $('#undo-change').disabled = historyIndex <= 0; $('#redo-change').disabled = historyIndex >= history.length - 1; };
   const recordHistory = () => { if (restoring) return; history = history.slice(0, historyIndex + 1); history.push(snapshot()); if (history.length > 40) history.shift(); historyIndex = history.length - 1; updateHistoryButtons(); };
   const travelHistory = step => { const next = historyIndex + step; if (next < 0 || next >= history.length) return; historyIndex = next; restoreSnapshot(history[next]); updateHistoryButtons(); status.textContent = step < 0 ? 'Undid the last change.' : 'Redid the change.'; };
-  try { const draft = await dbGet('current'); if (draft?.html) { main.innerHTML = draft.html; if (draft.mainStyle) main.setAttribute('style', draft.mainStyle); if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle); clearLegacyTextLayoutGaps(); status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()}.`; } } catch (error) { status.textContent = `Editor storage unavailable: ${error.message}`; }
+  try { const draft = await dbGet('current'); if (draft?.html) { main.innerHTML = draft.html; if (draft.mainStyle) main.setAttribute('style', draft.mainStyle); if (draft.bodyStyle) body.setAttribute('style', draft.bodyStyle); clearLegacyTextLayoutGaps(); ensureLandingTextTargets(); status.textContent = `Draft restored from ${new Date(draft.savedAt).toLocaleString()}.`; } } catch (error) { status.textContent = `Editor storage unavailable: ${error.message}`; }
+  ensureLandingTextTargets();
   recordHistory();
 
   const panels = () => [...main.querySelectorAll('.panel')];
