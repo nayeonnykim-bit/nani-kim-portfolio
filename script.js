@@ -129,6 +129,41 @@ document.addEventListener('submit', (event) => {
   bind('#layout-align', value => panels().forEach(panel => panel.style.textAlign = value)); bind('#layout-items', value => panels().forEach(panel => panel.style.alignItems = value)); bind('#layout-justify', value => panels().forEach(panel => panel.style.justifyContent = value));
   bind('#layout-radius', value => panels().forEach(panel => panel.style.borderRadius = `${value}px`), 'px'); bind('#layout-opacity', value => panels().forEach(panel => panel.style.opacity = value / 100), '%'); bind('#layout-overflow', value => panels().forEach(panel => panel.style.overflow = value));
   bind('#type-scale', value => main.style.fontSize = `${value}%`, '%'); bind('#line-height', value => main.style.lineHeight = value / 100); bind('#letter-space', value => main.style.letterSpacing = `${value}px`, 'px'); bind('#layout-bg', value => body.style.background = value); bind('#layout-color', value => main.style.color = value);
+  const landingTypeTargets = {title:'.hero h1', intro:'.hero-intro', eyebrow:'.hero .eyebrow'};
+  const landingTypeElement = () => main.querySelector(landingTypeTargets[$('#landing-type-target').value]) || main.querySelector('.hero h1');
+  const syncLandingType = () => {
+    const element = landingTypeElement();
+    if (!element) return;
+    const style = getComputedStyle(element);
+    $('#landing-type-content').value = element.textContent.trim();
+    $('#landing-type-font').value = style.fontFamily;
+    $('#landing-type-size').value = Math.max(12, Math.min(180, Math.round(parseFloat(style.fontSize) || 72)));
+    $('#landing-type-weight').value = style.fontWeight;
+    $('#landing-type-line').value = Math.max(70, Math.min(220, Math.round((parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2) / parseFloat(style.fontSize) * 100)));
+    $('#landing-type-letter').value = parseFloat(style.letterSpacing) || 0;
+    $('#landing-type-color').value = rgbToHex(style.color, '#ffffff');
+    $('#landing-type-align').value = style.textAlign || 'left';
+    ['#landing-type-size','#landing-type-line','#landing-type-letter'].forEach(id => setOutput($(id), id === '#landing-type-line' ? '' : 'px'));
+    setOutput($('#landing-type-line'));
+  };
+  const applyLandingTypeText = value => {
+    const element = landingTypeElement();
+    if (!element) return;
+    if ($('#landing-type-target').value === 'eyebrow') {
+      element.replaceChildren(...value.split(/\r?\n/).flatMap((line, index, lines) => index < lines.length - 1 ? [document.createTextNode(line), document.createElement('br')] : [document.createTextNode(line)]));
+    } else element.textContent = value;
+  };
+  const landingBind = (id, handler, suffix = '') => { const input = $(id); input.addEventListener('input', () => { handler(input.value); setOutput(input, suffix); status.textContent = 'Landing type changed. Save the draft to keep it.'; }); input.addEventListener('change', recordHistory); };
+  $('#landing-type-target').addEventListener('change', syncLandingType);
+  landingBind('#landing-type-content', applyLandingTypeText);
+  landingBind('#landing-type-font', value => landingTypeElement().style.fontFamily = value);
+  landingBind('#landing-type-size', value => landingTypeElement().style.fontSize = `${value}px`, 'px');
+  landingBind('#landing-type-weight', value => landingTypeElement().style.fontWeight = value);
+  landingBind('#landing-type-line', value => landingTypeElement().style.lineHeight = Number(value) / 100);
+  landingBind('#landing-type-letter', value => landingTypeElement().style.letterSpacing = `${value}px`, 'px');
+  landingBind('#landing-type-color', value => landingTypeElement().style.color = value);
+  landingBind('#landing-type-align', value => landingTypeElement().style.textAlign = value);
+  syncLandingType();
   const selectedBind = (id, handler, suffix = '') => bind(id, value => { if (!selected) { status.textContent = 'Select a section first.'; return; } handler(value); }, suffix);
   selectedBind('#c-width', value => selected.style.width = `${value}%`, '%'); selectedBind('#c-height', value => selected.style.minHeight = `${value}px`, 'px'); selectedBind('#c-padding-x', value => { selected.style.paddingLeft = `${value}px`; selected.style.paddingRight = `${value}px`; }, 'px'); selectedBind('#c-padding-y', value => { selected.style.paddingTop = `${value}px`; selected.style.paddingBottom = `${value}px`; }, 'px'); selectedBind('#c-gap', value => selected.style.gap = `${value}px`, 'px');
   selectedBind('#c-x', value => { selected.dataset.tx = value; updateTransform(selected); }, 'px'); selectedBind('#c-y', value => { selected.dataset.ty = value; updateTransform(selected); }, 'px'); selectedBind('#c-rotate', value => { selected.dataset.rotate = value; updateTransform(selected); }, '°'); selectedBind('#c-scale', value => { selected.dataset.scale = value; updateTransform(selected); }, '%'); selectedBind('#c-z', value => selected.style.zIndex = value);
