@@ -108,6 +108,12 @@ main [hidden]{display:none!important}
 .editor-column.editor-media-frame{min-height:70svh}
 .editor-column.editor-media-frame>img,.editor-column.editor-media-frame>video{object-fit:cover}
 .editor-column-text{position:relative;z-index:2;max-width:38ch;margin:0;padding:32px;white-space:pre-wrap;color:inherit;font:inherit;line-height:1.25}
+main .editor-columns{min-height:0;align-items:stretch;background:transparent;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+main .editor-columns>.editor-column{box-sizing:border-box;min-height:0;height:var(--column-height,auto);background:transparent;display:flex;flex-direction:column;overflow:hidden}
+main .editor-columns>.editor-column>.media-placeholder{min-height:240px;height:auto;flex:1}
+main .editor-columns>.editor-column>img,main .editor-columns>.editor-column>video{position:relative!important;inset:auto!important;display:block;width:100%;max-width:100%;height:auto;min-height:0;object-fit:contain;flex:0 1 auto}
+main .editor-columns[style*="--column-height"]>.editor-column>img,main .editor-columns[style*="--column-height"]>.editor-column>video{height:100%;min-height:0}
+main .editor-column>.editor-column-text{box-sizing:border-box;max-width:none;width:100%;padding:0;flex:0 0 auto}
 .column-content-editor{margin-top:12px;padding-top:10px;border-top:1px solid #44464f}
 .column-content-editor h4{margin:0 0 8px;color:#f2f3f7;font-size:11px}
 .portfolio-inspector .column-content-editor label{display:block}
