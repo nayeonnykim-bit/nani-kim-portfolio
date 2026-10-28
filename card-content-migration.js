@@ -1,7 +1,7 @@
 (() => {
   const marker = 'nani-card-content-2026-10-27-v3';
   // Capture the published source before asynchronous local draft restoration.
-  const sourceGrid = document.querySelector('[data-project-grid]')?.cloneNode(true);
+  let sourceGrid = document.querySelector('[data-project-grid]')?.cloneNode(true);
   let attempts = 0;
   const cards = [
     ["O'CLOCK", ['Identity Design', 'Motion Design', 'Experimental Design']],
@@ -24,7 +24,13 @@
       return;
     }
     let grid = document.querySelector('[data-project-grid],#works');
-    if (!grid || !sourceGrid) return;
+    if (!grid) return;
+    if (!sourceGrid || sourceGrid.querySelectorAll(':scope > .project').length < cards.length) {
+      const response = await fetch(new URL('./index.html', location.href), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Published card source unavailable');
+      sourceGrid = new DOMParser().parseFromString(await response.text(), 'text/html').querySelector('[data-project-grid]');
+    }
+    if (!sourceGrid) return;
     let elements = [...grid.querySelectorAll(':scope > .project')];
     const legacy = elements.length === 4 && document.querySelector('main > #home');
     const oldDraft = await editor.getDraft();
