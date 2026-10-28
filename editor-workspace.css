@@ -108,6 +108,11 @@ main [hidden]{display:none!important}
 .editor-column.editor-media-frame{min-height:70svh}
 .editor-column.editor-media-frame>img,.editor-column.editor-media-frame>video{object-fit:cover}
 .editor-column-text{position:relative;z-index:2;max-width:38ch;margin:0;padding:32px;white-space:pre-wrap;color:inherit;font:inherit;line-height:1.25}
+body.debug-editing main .editor-column.editor-drop-target{outline:3px solid #78a9ef!important;background:#dce8ff!important}
+#all-column-content textarea{width:100%;min-height:80px;resize:vertical}
+#all-column-content label{display:block;margin:10px 0}
+#all-column-content label input,#all-column-content label textarea{margin-top:5px}
+main>.editor-custom-section,main>.editor-columns{box-sizing:border-box;max-width:100%;min-width:0}
 main .editor-columns{min-height:0;align-items:stretch;background:transparent;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 main .editor-columns>.editor-column{box-sizing:border-box;min-height:0;height:var(--column-height,auto);background:transparent;display:flex;flex-direction:column;overflow:hidden}
 main .editor-columns>.editor-column>.media-placeholder{min-height:240px;height:auto;flex:1}
