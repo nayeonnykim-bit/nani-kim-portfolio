@@ -1,0 +1,15 @@
+@font-face{font-family:PortfolioCaslon;src:local("Adobe Caslon Pro"),local("Adobe Caslon Pro Regular"),local("Adobe Caslon"),local("Big Caslon");font-display:swap}
+.oclock-type-lab{background:#fff;color:#111;padding:clamp(56px,7vw,110px) clamp(24px,7vw,110px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(48px,7vw,120px);border-radius:5px;margin:8px}
+.type-specimen{min-width:0}
+.type-specimen h2{font:400 clamp(18px,2vw,28px)/1.1 Portfolio,Arial,sans-serif;margin:0 0 clamp(38px,4vw,64px)}
+.type-specimen[data-font="helvetica"]{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}
+.type-specimen[data-font="caslon"]{font-family:PortfolioCaslon,Georgia,"Times New Roman",serif}
+.type-characters{font-size:clamp(30px,4.2vw,66px);line-height:1.28;letter-spacing:-.035em;margin-bottom:clamp(38px,4vw,64px);overflow:hidden}
+.type-characters p{margin:0;white-space:nowrap}
+.type-weight-control{display:grid;grid-template-columns:minmax(0,1fr) 56px;align-items:center;gap:20px}
+.type-weight-slider{position:relative;height:36px;cursor:ew-resize;touch-action:none;outline:none}
+.type-weight-slider::before{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:#111;transform:translateY(-50%)}
+.type-weight-knob{position:absolute;top:50%;left:50%;width:20px;height:20px;border-radius:50%;background:#111;transform:translate(-50%,-50%);transition:left 90ms ease}
+.type-weight-number{text-align:right;font-size:18px;font-variant-numeric:tabular-nums}
+.type-weight-label{display:block;margin-top:14px;font-size:16px}
+@media(max-width:760px){.oclock-type-lab{grid-template-columns:1fr}.type-characters{font-size:clamp(28px,9vw,52px)}}

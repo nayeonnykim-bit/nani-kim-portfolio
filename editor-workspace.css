@@ -65,6 +65,15 @@ body .portfolio-inspector[data-scope=global]:not([data-searching]) [data-scope-g
 body .portfolio-inspector .editor-layer{display:block;width:100%;margin:3px 0;padding:9px 10px;border:1px solid transparent;background:transparent;text-align:left;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:#c4c6d0}
 body .portfolio-inspector .editor-layer.nested{padding-left:24px}
 body .portfolio-inspector .editor-layer.active{background:#35415d;border-color:#6689d0;color:#edf2ff}
+body .portfolio-inspector .editor-layer-row{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;border-radius:4px}
+body .portfolio-inspector .editor-layer-row.nested{margin-left:16px}
+body .portfolio-inspector .editor-layer-row .editor-layer{margin:2px 0}
+body .portfolio-inspector .editor-layer-handle{display:grid;place-items:center;height:30px;color:#777b88;font:13px/1 Arial,sans-serif;cursor:grab;user-select:none}
+body .portfolio-inspector .editor-layer-row:active .editor-layer-handle{cursor:grabbing}
+body .portfolio-inspector .editor-layer-row.dragging{opacity:.45}
+body .portfolio-inspector .editor-layer-row.drop-before::before,body .portfolio-inspector .editor-layer-row.drop-after::after{content:"";position:absolute;left:3px;right:3px;height:2px;background:#8eafff;z-index:2}
+body .portfolio-inspector .editor-layer-row.drop-before::before{top:-1px}
+body .portfolio-inspector .editor-layer-row.drop-after::after{bottom:-1px}
 body .portfolio-inspector .editor-asset{display:flex;align-items:center;gap:7px;padding:7px 0;border-top:1px solid #3e4048}
 body .portfolio-inspector .editor-asset span{flex:1;min-width:0;overflow-wrap:anywhere;color:#b5b8c5;font-size:10px}
 body .portfolio-inspector .editor-progress{padding:10px;background:#2d3547;border-radius:5px;font-size:10px;color:#d4e3ff}
