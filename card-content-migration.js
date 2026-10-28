@@ -1,5 +1,5 @@
 (() => {
-  const marker = 'nani-card-content-2026-10-27-v3';
+  const marker = 'nani-card-content-2026-10-27-v4';
   // Capture the published source before asynchronous local draft restoration.
   let sourceGrid = document.querySelector('[data-project-grid]')?.cloneNode(true);
   let attempts = 0;
@@ -17,7 +17,7 @@
   ];
 
   async function migrate() {
-    try { if (localStorage.getItem(marker)) return; } catch {}
+    try { if (localStorage.getItem(marker) && document.querySelectorAll('[data-project-grid] > .project').length >= cards.length) return; } catch {}
     const editor = window.__portfolioEditor;
     if (!editor?.ready) {
       if (++attempts < 250) setTimeout(migrate, 80);
