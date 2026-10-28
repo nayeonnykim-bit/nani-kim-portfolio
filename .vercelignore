@@ -1,0 +1,15 @@
+# Publish only the website, not working files or portable editor backups.
+*.tgz
+*.zip
+*-editable-backup.json
+mockup-output/
+poster-series/
+poster-variations/
+output/
+tests/
+tools/
+*-proof.png
+*.md
+figma-export.html
+.DS_Store
+.git/

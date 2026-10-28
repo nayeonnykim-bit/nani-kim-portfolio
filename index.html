@@ -7,89 +7,59 @@
   <title>Nani Kim — Designer</title>
   <link rel="stylesheet" href="./styles.css" />
   <link rel="stylesheet" href="./editor.css" />
-</head>
+  <link rel="stylesheet" href="./project-grid.css" />
+  <link rel="stylesheet" href="./background.css" />
+  <link rel="stylesheet" href="./spacing.css" />
+  <link rel="stylesheet" href="./card-alignment.css" />
+<link rel="stylesheet" href="./editor-workspace.css"></head>
 <body>
   <header class="nav-wrap">
-    <nav aria-label="Primary navigation">
-      <a href="#home">Home</a><a href="#works">Works</a><a href="#about">About</a><a href="#contact">Contact</a>
-    </nav>
+    <a class="nav-brand" href="#works" aria-label="Nani Kim — selected work"><span class="nav-brand-text">NNN_</span></a>
+    <nav aria-label="Primary navigation"><a href="#works">Work</a><a href="#photography">Photography</a><a href="./about.html">About</a></nav>
   </header>
 
   <main>
-    <section class="hero panel" id="home" data-editable-section data-columns="2">
-      <video autoplay muted loop playsinline poster="./assets/project-1.webp">
-        <source src="https://framerusercontent.com/assets/IvCN6JT5geDQ6QEzbUaYWeU870.mp4" type="video/mp4" />
-      </video>
-      <div class="shade"></div>
-      <div class="hero-content">
-        <div><p class="eyebrow" data-editable-text>Independent designer<br />New York — Seoul</p><h1 data-editable-text>Nani Kim</h1></div>
-        <p class="hero-intro" data-editable-text>I shape identities, digital experiences, and motion into expressive systems built to last.</p>
-      </div>
-      <a class="scroll-cue" href="#works" aria-label="Scroll to work">↘</a>
-    </section>
-
-    <section class="works" id="works" aria-label="Selected work" data-project-grid data-columns="1">
+    <section class="works" id="works" aria-label="Selected work" data-project-grid data-columns="3">
       <a class="project panel" data-editable-section href="./oclock.html" style="--image:url('./assets/project-1.webp')">
-        <div class="project-copy"><h2>O'CLOCK</h2><div class="tags"><span>Branding and Identity Design</span><span>Motion Design</span><span>Experimental Design</span></div></div>
+        <div class="project-copy"><h2 data-editable-text>O'CLOCK</h2><div class="tags"><span data-editable-text>Identity Design</span><span data-editable-text>Motion Design</span><span data-editable-text>Experimental Design</span></div></div>
       </a>
       <a class="project panel" data-editable-section href="./bloom.html" style="--image:url('./assets/project-2.webp')">
-        <div class="project-copy"><h2>Bloom</h2><div class="tags"><span>Motion Design</span><span>Website Design</span><span>UX Design</span></div></div>
+        <div class="project-copy"><h2 data-editable-text>Bloom</h2><div class="tags"><span data-editable-text>Motion Design</span><span data-editable-text>Website Design</span><span data-editable-text>UX Design</span></div></div>
       </a>
       <a class="project panel" data-editable-section href="./pulse.html" style="--image:url('./assets/project-3.jpg')">
-        <div class="project-copy"><h2>Pulse</h2><div class="tags"><span>Experimental Design</span><span>Motion Design</span><span>UX Design</span></div></div>
+        <div class="project-copy"><h2 data-editable-text>Pulse</h2><div class="tags"><span data-editable-text>Experimental Design</span><span data-editable-text>Motion Design</span><span data-editable-text>UX Design</span></div></div>
       </a>
       <a class="project panel" data-editable-section href="./canvas.html" style="--image:url('./assets/project-4.jpg')">
-        <div class="project-copy"><h2>Canvas</h2><div class="tags"><span>Experimental Design</span><span>UX Design</span><span>Motion Design</span></div></div>
+        <div class="project-copy"><h2 data-editable-text>Desert X</h2><div class="tags"><span data-editable-text>Brand Identity</span><span data-editable-text>Experimental Design</span><span data-editable-text>Font Design</span></div></div>
+      </a>
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-2.webp');--image-position:35% center">
+        <div class="project-copy"><h2 data-editable-text>Rise</h2><div class="tags"><span data-editable-text>Brand Identity</span><span data-editable-text>Editorial Design</span><span data-editable-text>Application Design</span></div></div>
+      </a>
+      <a class="project panel" id="photography" data-editable-section href="#contact" style="--image:url('./assets/project-3.jpg');--image-position:70% center">
+        <div class="project-copy"><h2 data-editable-text>AI &amp; Me</h2><div class="tags"><span data-editable-text>Print Design</span><span data-editable-text>Editorial Design</span></div></div>
+      </a>
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-4.jpg');--image-position:left center">
+        <div class="project-copy"><h2 data-editable-text>Eyebook</h2><div class="tags"><span data-editable-text>Brand Identity</span><span data-editable-text>Experimental Design</span><span data-editable-text>Editorial Design</span></div></div>
+      </a>
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-1.webp');--image-position:65% center">
+        <div class="project-copy"><h2 data-editable-text>AZ Coffee</h2><div class="tags"><span data-editable-text>Brand Identity</span><span data-editable-text>Packaging Design</span><span data-editable-text>Editorial Design</span></div></div>
+      </a>
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-3.jpg');--image-position:25% center">
+        <div class="project-copy"><h2 data-editable-text>Matter Makes Form</h2><div class="tags"><span data-editable-text>Print Design</span><span data-editable-text>Editorial Design</span></div></div>
+      </a>
+      <a class="project panel" data-editable-section href="#contact" style="--image:url('./assets/project-2.webp');--image-position:right center">
+        <div class="project-copy"><h2 data-editable-text>Impressionism</h2><div class="tags"><span data-editable-text>Print Design</span><span data-editable-text>Editorial Design</span></div></div>
       </a>
     </section>
 
-    <section class="about panel light" id="about" data-editable-section>
-      <div class="about-intro">
-        <p class="eyebrow">01 — About</p>
-        <h2>About me</h2>
-        <p class="lead">My journey into design began with a fascination for how colors, shapes, and interactions can evoke emotions and tell stories. I'm passionate about understanding the unique needs of each project and crafting solutions that resonate with users on a personal level.</p>
-        <p>When I'm not designing, you'll find me exploring nature, capturing moments through photography, or indulging in a good book. I believe that inspiration can come from anywhere, and I'm always eager to bring fresh perspectives to my work.</p>
-      </div>
-      <div class="about-grid">
-        <div><p class="eyebrow">02 — Services</p><h3>Services</h3><ul><li>Branding and Identity Design</li><li>Consultation and Strategy</li><li>Experimental Design</li><li>Motion Design</li><li>UX Design</li><li>Website Design</li><li>Website Development</li></ul></div>
-        <div><p class="eyebrow">03 — Experience</p><h3>Experience</h3><ul><li><span>2012—2014</span> Web Designer @ Amazon</li><li><span>2014—2016</span> Branding Specialist @ Nike</li><li><span>2016—2022</span> Senior UX/UI Designer @ Google</li><li><span>2022—Now</span> Freelance Designer @ Home</li></ul></div>
-      </div>
-    </section>
 
     <section class="contact panel" id="contact" data-editable-section>
       <div class="contact-copy"><p class="eyebrow">04 — Contact</p><h2>Let's get<br />in touch</h2><div class="contact-details"><div><span>Email</span><a href="mailto:hi@andrew.com">hi@andrew.com</a></div><div><span>Channels</span><a href="#">X.com</a><a href="#">Threads</a><a href="#">LinkedIn</a><a href="#">YouTube</a></div></div></div>
       <form id="contact-form"><label>Name<input name="name" placeholder="Your name" required /></label><label>Email<input name="email" type="email" placeholder="you@example.com" required /></label><label>Message<textarea name="message" placeholder="Tell me about your project" rows="5" required></textarea></label><button type="submit">Submit <span>↗</span></button><p class="form-status" aria-live="polite"></p></form>
-      <footer>© 2026 Nani Kim <a href="#home">Back to top ↑</a></footer>
+      <footer>© 2026 Nani Kim <a href="#works">Back to top ↑</a></footer>
     </section>
   </main>
 
-  <button class="debug-trigger" type="button" aria-label="Open design editor">D</button>
-  <aside class="debug-menu" aria-label="Design editor" aria-hidden="true">
-    <div class="debug-head"><div><small>Portfolio editor</small><strong>Debug menu</strong></div><div class="debug-head-actions"><button type="button" id="undo-change" aria-label="Undo">↶</button><button type="button" id="redo-change" aria-label="Redo">↷</button><button type="button" data-debug-close aria-label="Close editor">×</button></div></div>
-    <div class="debug-readout"><span id="debug-viewport">—</span><span id="debug-selection">Global site controls</span></div>
-    <div class="debug-tabs" role="tablist"><button type="button" class="active" data-editor-tab="global">Canvas</button><button type="button" data-editor-tab="component">Selection</button></div>
-    <div class="debug-pane active" data-pane="global">
-      <div class="debug-group"><p>Add section</p><div class="debug-grid"><button type="button" data-add="text">+ Text</button><button type="button" data-add="image">+ Image</button><button type="button" data-add="video">+ Video</button><button type="button" data-add="split">+ Split</button></div></div>
-      <details class="debug-group" open><summary>Layout & size</summary><label>Columns <select id="layout-columns"><option value="1">1 column</option><option value="2">2 columns</option><option value="3">3 columns</option><option value="4">4 columns</option></select></label><label>Canvas width <input id="layout-width" type="range" min="40" max="100" value="100" /><output id="layout-width-value">100%</output></label><label>Section height <input id="layout-height" type="range" min="120" max="1200" value="720" /><output id="layout-height-value">720px</output></label><label>Section gap <input id="layout-gap" type="range" min="-80" max="160" value="8" /><output id="layout-gap-value">8px</output></label><label>Items <select id="layout-items"><option value="start">Top</option><option value="center">Center</option><option value="end">Bottom</option><option value="stretch">Stretch</option></select></label><label>Content <select id="layout-justify"><option value="start">Start</option><option value="center">Center</option><option value="end">End</option><option value="space-between">Space between</option></select></label></details>
-      <details class="debug-group" open><summary>Spacing</summary><div class="preset-row"><button type="button" data-space="compact">Compact</button><button type="button" data-space="comfortable">Comfort</button><button type="button" data-space="airy">Airy</button></div><label>Component X gap <input id="padding-x" type="range" min="-40" max="120" value="8" /><output id="padding-x-value">8px</output></label><label>Component Y gap <input id="padding-y" type="range" min="-40" max="120" value="8" /><output id="padding-y-value">8px</output></label><label>Canvas X margin <input id="margin-x" type="range" min="0" max="120" value="0" /><output id="margin-x-value">0px</output></label><label>Canvas Y margin <input id="margin-y" type="range" min="0" max="120" value="0" /><output id="margin-y-value">0px</output></label></details>
-      <details class="debug-group"><summary>Typography</summary><label>Text align <select id="layout-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label>Type scale <input id="type-scale" type="range" min="70" max="160" value="100" /><output id="type-scale-value">100%</output></label><label>Line height <input id="line-height" type="range" min="90" max="200" value="120" /><output id="line-height-value">1.2</output></label><label>Letter space <input id="letter-space" type="range" min="-6" max="16" value="0" /><output id="letter-space-value">0px</output></label></details>
-      <details class="debug-group" open><summary>Landing type</summary><label>Target <select id="landing-type-target"><option value="title">Hero title</option><option value="intro">Hero intro</option><option value="eyebrow">Hero eyebrow</option></select></label><label>Text <textarea id="landing-type-content" rows="3" placeholder="Edit landing text"></textarea></label><label>Font <select id="landing-type-font"><option value="Portfolio, Arial, sans-serif">Portfolio</option><option value="Arial, sans-serif">Arial</option><option value="Georgia, serif">Georgia</option><option value="'Courier New', monospace">Courier</option><option value="system-ui, sans-serif">System</option></select></label><label>Size <input id="landing-type-size" type="range" min="12" max="180" value="72" /><output id="landing-type-size-value">72px</output></label><label>Weight <select id="landing-type-weight"><option value="300">Light</option><option value="400">Regular</option><option value="500">Medium</option><option value="600">Semibold</option><option value="700">Bold</option></select></label><label>Line height <input id="landing-type-line" type="range" min="70" max="220" value="100" /><output id="landing-type-line-value">1</output></label><label>Letter space <input id="landing-type-letter" type="range" min="-12" max="24" value="0" /><output id="landing-type-letter-value">0px</output></label><label>Color <input id="landing-type-color" type="color" value="#ffffff" /></label><label>Align <select id="landing-type-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label></details>
-      <details class="debug-group"><summary>Theme</summary><label>Radius <input id="layout-radius" type="range" min="0" max="80" value="12" /><output id="layout-radius-value">12px</output></label><label>Opacity <input id="layout-opacity" type="range" min="10" max="100" value="100" /><output id="layout-opacity-value">100%</output></label><label>Background <input id="layout-bg" type="color" value="#f1f0ec" /></label><label>Text <input id="layout-color" type="color" value="#ffffff" /></label><label>Overflow <select id="layout-overflow"><option value="hidden">Hidden</option><option value="visible">Visible</option><option value="auto">Scroll</option></select></label></details>
-      <div class="debug-group debug-toggles"><label><input id="toggle-grid" type="checkbox" /> Grid overlay</label><label><input id="toggle-outline" type="checkbox" /> Element outlines</label><label><input id="toggle-motion" type="checkbox" /> Reduce motion</label></div>
-    </div>
-    <div class="debug-pane" data-pane="component">
-      <div class="component-help">Click a section or project card on the page to inspect it.</div>
-      <details class="debug-group" open><summary>Frame</summary><label>Width <input id="c-width" type="range" min="20" max="100" value="100"><output id="c-width-value">100%</output></label><label>Min height <input id="c-height" type="range" min="80" max="1200" value="400"><output id="c-height-value">400px</output></label><label>Padding X <input id="c-padding-x" type="range" min="0" max="160" value="0"><output id="c-padding-x-value">0px</output></label><label>Padding Y <input id="c-padding-y" type="range" min="0" max="160" value="0"><output id="c-padding-y-value">0px</output></label><label>Inner gap <input id="c-gap" type="range" min="0" max="160" value="0"><output id="c-gap-value">0px</output></label></details>
-      <details class="debug-group"><summary>Position & transform</summary><label>X <input id="c-x" type="range" min="-240" max="240" value="0"><output id="c-x-value">0px</output></label><label>Y <input id="c-y" type="range" min="-240" max="240" value="0"><output id="c-y-value">0px</output></label><label>Rotate <input id="c-rotate" type="range" min="-30" max="30" value="0"><output id="c-rotate-value">0°</output></label><label>Scale <input id="c-scale" type="range" min="50" max="150" value="100"><output id="c-scale-value">100%</output></label><label>Layer <input id="c-z" type="range" min="0" max="20" value="0"><output id="c-z-value">0</output></label></details>
-      <details class="debug-group" open><summary>Appearance</summary><label>Radius <input id="c-radius" type="range" min="0" max="100" value="12"><output id="c-radius-value">12px</output></label><label>Opacity <input id="c-opacity" type="range" min="10" max="100" value="100"><output id="c-opacity-value">100%</output></label><label>Fill <input id="c-bg" type="color" value="#111111"></label><label>Text <input id="c-color" type="color" value="#ffffff"></label><label>Blend <select id="c-blend"><option value="normal">Normal</option><option value="multiply">Multiply</option><option value="screen">Screen</option><option value="overlay">Overlay</option><option value="difference">Difference</option></select></label></details>
-      <details class="debug-group" open><summary>Effects</summary><label>Shadow <input id="c-shadow" type="range" min="0" max="80" value="0"><output id="c-shadow-value">0</output></label><label>Blur <input id="c-blur" type="range" min="0" max="20" value="0"><output id="c-blur-value">0px</output></label><label>Saturate <input id="c-saturate" type="range" min="0" max="200" value="100"><output id="c-saturate-value">100%</output></label><label>Border <input id="c-border" type="range" min="0" max="12" value="0"><output id="c-border-value">0px</output></label><label>Border color <input id="c-border-color" type="color" value="#ffffff"></label></details>
-      <details class="debug-group" open><summary>Hover interaction</summary><div class="hover-presets"><button type="button" data-hover-preset="lift">Lift</button><button type="button" data-hover-preset="zoom">Zoom</button><button type="button" data-hover-preset="glow">Glow</button><button type="button" data-hover-preset="tilt">Tilt</button></div><label>Move Y <input id="h-y" type="range" min="-40" max="40" value="-8"><output id="h-y-value">-8px</output></label><label>Scale <input id="h-scale" type="range" min="90" max="120" value="102"><output id="h-scale-value">102%</output></label><label>Rotate <input id="h-rotate" type="range" min="-10" max="10" value="0"><output id="h-rotate-value">0°</output></label><label>Glow <input id="h-glow" type="range" min="0" max="80" value="24"><output id="h-glow-value">24</output></label><label>Duration <input id="h-duration" type="range" min="80" max="1200" value="350"><output id="h-duration-value">350ms</output></label></details>
-      <details class="debug-group"><summary>Media</summary><label class="debug-upload">Replace image / video<input id="media-upload" type="file" accept="image/*,video/*" /></label><label>Fit <select id="media-fit"><option value="cover">Cover</option><option value="contain">Contain</option><option value="fill">Stretch</option></select></label><label>Position <select id="media-position"><option value="center">Center</option><option value="top">Top</option><option value="bottom">Bottom</option><option value="left">Left</option><option value="right">Right</option></select></label></details>
-      <details class="debug-group"><summary>Layer actions</summary><div class="debug-grid"><button type="button" id="move-up">↑ Move up</button><button type="button" id="move-down">↓ Move down</button><button type="button" id="duplicate-section">Duplicate</button><button type="button" id="reset-section">Reset style</button></div><button type="button" class="danger" id="remove-section">Remove selected section</button></details>
-    </div>
-    <div class="debug-actions"><button type="button" id="reset-draft">Reset</button><button type="button" id="save-draft" class="primary">Save draft</button></div>
-    <p class="debug-status" id="debug-status">Press D to close · ⌘Z to undo · draft saves in this browser.</p>
-  </aside>
-  <script src="./script.js"></script>
+  <script src="./editor-template.js"></script><script src="./editor-media.js"></script><script src="./editor-core.js"></script><script src="./card-content-migration.js"></script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+@font-face{font-family:"Monument Grotesk";src:local("Monument Grotesk Regular"),local("Monument Grotesk");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Monument Grotesk";src:local("Monument Grotesk Bold"),local("Monument Grotesk");font-style:normal;font-weight:700 900;font-display:swap}
+
+:root{--paper:#fff;--site-font:"Monument Grotesk",Arial,Helvetica,sans-serif}
+
+html,body{background:#fff!important;font-family:var(--site-font)!important}
+body *,body *::before,body *::after{font-family:var(--site-font)!important}
+button,input,textarea,select,option{font-family:var(--site-font)!important}
+.works[data-project-grid]{background:#fff}
+.nav-brand-text{display:block;font-family:var(--site-font)!important;font-size:27px;font-weight:900;line-height:1;letter-spacing:-.075em;color:#050505}
+.nav-brand img{display:none}
+
+@media(max-width:640px){.nav-brand-text{font-size:23px}}
+
+.nav-wrap{grid-template-columns:1fr auto}
+.nav-wrap nav{justify-self:end;justify-content:flex-end}

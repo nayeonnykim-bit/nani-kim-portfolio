@@ -1,0 +1,113 @@
+/* Editor chrome is deliberately scoped: closing it does not redesign the portfolio. */
+.project::before{background-size:var(--editor-bg-size,cover)!important;background-repeat:no-repeat}
+main [data-editable-section][hidden]{display:none!important}
+body .portfolio-inspector{width:min(var(--editor-panel-width,470px),calc(100vw - 24px))!important;height:min(var(--editor-panel-height,calc(100vh - 24px)),calc(100vh - 24px))!important;bottom:auto!important}
+body .portfolio-inspector .editor-panel-size{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 12px;background:#292a30;font-size:10px;flex:none}
+body .portfolio-inspector .editor-panel-size label{display:flex;gap:4px;align-items:center}
+body .portfolio-inspector .editor-panel-size input{width:58px!important;padding:4px!important;height:26px}
+body .portfolio-inspector .editor-panel-size button{padding:5px 7px;font-size:10px}
+body .portfolio-inspector .editor-resize-grip{position:absolute;bottom:0;left:0;width:20px;height:20px;cursor:nesw-resize;touch-action:none;z-index:20;background:linear-gradient(45deg,#83aaff 0 18%,transparent 20% 35%,#83aaff 37% 44%,transparent 46%)}
+body .portfolio-inspector,body .portfolio-inspector *,body .debug-trigger{box-sizing:border-box;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important;letter-spacing:normal;text-transform:none}
+body .debug-trigger{position:fixed;right:18px;bottom:18px;z-index:99980;width:42px;height:42px;padding:0;border:1px solid #4b4d52;border-radius:10px;background:#25262a;color:#eee;font:600 14px/1 Arial,sans-serif;box-shadow:0 4px 18px #0003;cursor:pointer}
+body.debug-open .debug-trigger{display:none}
+body .portfolio-inspector{--accent:#83aaff;display:none;position:fixed;z-index:99990;inset:12px 12px 12px auto;width:min(470px,calc(100vw - 24px));height:auto;max-height:none;overflow:hidden;padding:0;margin:0;border:1px solid #45464b;border-radius:12px;background:#232428;color:#dedee3;box-shadow:0 16px 70px #0006;font:12px/1.45 Arial,sans-serif;isolation:isolate;scrollbar-width:thin;scrollbar-color:#55565f #25262b}
+body.debug-open .portfolio-inspector{display:flex;flex-direction:column}
+body .portfolio-inspector .debug-head{position:static;display:flex;flex:none;align-items:center;justify-content:space-between;background:#2d2e33;padding:13px 14px;border:0;border-bottom:1px solid #18191c;backdrop-filter:none}
+body .portfolio-inspector .debug-head small{display:block;color:#9c9da8;font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+body .portfolio-inspector .debug-head strong{display:block;margin-top:2px;font-size:14px;font-weight:600;color:#f4f4f6}
+body .portfolio-inspector .debug-head-actions{display:flex;gap:5px}
+body .portfolio-inspector button{appearance:none;min-width:0;margin:0;padding:8px 9px;border:1px solid #494a51;border-radius:5px;background:#35363c;color:#ededf2;text-decoration:none;text-align:center;font:500 11px/1.3 Arial,sans-serif;cursor:pointer;transition:background .12s}
+body .portfolio-inspector button:hover{background:#454750;transform:none}
+body .portfolio-inspector button:disabled{opacity:.4;cursor:not-allowed}
+body .portfolio-inspector button:focus-visible,body .portfolio-inspector input:focus-visible,body .portfolio-inspector select:focus-visible,body .portfolio-inspector textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body .portfolio-inspector .primary{color:#fff;background:#4564aa;border-color:#668ad1}
+body .portfolio-inspector .danger{color:#ffb9b9;background:#422d32;border-color:#774650}
+body .portfolio-inspector .debug-head-actions button{width:30px;height:30px;padding:0;font-size:18px}
+body .portfolio-inspector .debug-readout{flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:30px;margin:0;padding:6px 14px;background:#24252a;border-bottom:1px solid #17181c;font-size:10px;color:#a8aab3}
+body .portfolio-inspector .debug-readout span:last-child{max-width:55%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#bfd1ff}
+body .portfolio-inspector .editor-workspace{display:flex;flex:1;min-height:0;overflow:hidden}
+body .portfolio-inspector .editor-rail{display:flex;flex:0 0 62px;flex-direction:column;gap:3px;padding:9px 5px;background:#1d1e22;border-right:1px solid #141519;overflow:auto}
+body .portfolio-inspector .editor-rail button{display:flex;flex-direction:column;align-items:center;gap:3px;flex:none;width:100%;padding:10px 3px;border:0;background:transparent;color:#9c9ea9;font-size:9px}
+body .portfolio-inspector .editor-rail button span{font-size:20px;line-height:1.1;font-weight:400}
+body .portfolio-inspector .editor-rail button.active{background:#3b4560;color:#dce7ff;box-shadow:inset 2px 0 var(--accent)}
+body .portfolio-inspector .editor-inspector{flex:1;min-width:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 14px 18px}
+body .portfolio-inspector .editor-search{position:sticky;top:0;z-index:2;background:#232428;padding:12px 0 5px}
+body .portfolio-inspector #editor-search{display:block;width:100%;height:31px;padding:6px 10px;border-radius:5px;font-size:11px}
+body .portfolio-inspector #editor-save-state{font-size:10px;color:#9ba4ba;margin:4px 0 12px;line-height:1.4}
+body .portfolio-inspector .debug-group{display:block;margin:0 0 10px;padding:12px 0;border:0;border-top:1px solid #424349;background:none;border-radius:0}
+body .portfolio-inspector .debug-group>summary,body .portfolio-inspector .debug-group>p:first-child{position:static;margin:0 0 11px;padding:0;list-style-position:inside;color:#e5e5e9;font-size:11px;font-weight:600;letter-spacing:0;text-transform:none;cursor:pointer}
+body .portfolio-inspector .debug-group>summary::after{content:none}
+body .portfolio-inspector .debug-group>p:first-child{cursor:default}
+body .portfolio-inspector .debug-group:not([open])>summary{margin-bottom:0}
+body .portfolio-inspector label{display:grid;grid-template-columns:105px minmax(0,1fr);align-items:center;gap:8px;min-height:32px;margin:5px 0;padding:0;background:none;color:#b8b9c3;text-align:left;font-size:10px;font-weight:400}
+body .portfolio-inspector label.editor-range-row{grid-template-columns:105px minmax(35px,1fr) 72px}
+body .portfolio-inspector label>output{display:none}
+body .portfolio-inspector input:not([type=range]):not([type=checkbox]):not([type=file]),body .portfolio-inspector select,body .portfolio-inspector textarea{width:100%;min-width:0;height:30px;padding:5px 7px;border:1px solid #4c4e56;border-radius:4px;background:#191a1f;color:#e6e7ed;font:11px/1.4 Arial,sans-serif;box-shadow:none}
+body .portfolio-inspector select{grid-column:auto;min-height:30px;white-space:normal}
+body .portfolio-inspector textarea{height:auto;min-height:68px;resize:vertical}
+body .portfolio-inspector label:has(textarea){align-items:start}
+body .portfolio-inspector input[type=range]{appearance:auto;grid-column:auto;width:100%;min-width:0;height:20px;padding:0;margin:0;accent-color:#8eafff;cursor:ew-resize}
+body .portfolio-inspector input[type=color]{padding:2px!important;height:28px!important}
+body .portfolio-inspector input[type=checkbox]{appearance:auto;position:static;width:13px;height:13px;margin:0;accent-color:#8eafff}
+body .portfolio-inspector .editor-number{display:flex;align-items:center;gap:4px;min-width:0;color:#9497a4;font-size:9px}
+body .portfolio-inspector .editor-number input{min-width:0;width:56px;height:27px!important;padding:4px!important;text-align:right;font-variant-numeric:tabular-nums}
+body .portfolio-inspector .debug-upload{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:12px 0;padding:12px;border:1px dashed #636879;border-radius:5px;background:#2c303c;color:#dde6ff;cursor:pointer}
+body .portfolio-inspector .debug-upload input{display:block;width:100%;height:auto;padding:0;font-size:10px;color:#aeb8d4;cursor:pointer}
+body .portfolio-inspector input[type=file]::file-selector-button{padding:5px 7px;background:#444f6a;border:0;border-radius:3px;color:#fff}
+body .portfolio-inspector .debug-grid,body .portfolio-inspector .preset-row,body .portfolio-inspector .hover-presets{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}
+body .portfolio-inspector .preset-row{grid-template-columns:repeat(3,1fr)}
+body .portfolio-inspector .editor-check,body .portfolio-inspector .debug-toggles label{display:flex;gap:7px}
+body .portfolio-inspector .editor-note{display:block;margin:9px 0;color:#9699a6;font-size:10px;line-height:1.65;white-space:normal;text-transform:none;font-weight:400}
+body .portfolio-inspector .editor-scope{display:flex;gap:4px;margin-bottom:10px}
+body .portfolio-inspector .editor-scope button{flex:1;font-size:10px}
+body .portfolio-inspector .editor-scope .active{color:#d8e4ff;border-color:#7495dc;background:#384563}
+body .portfolio-inspector[data-scope=global]:not([data-searching]) [data-scope-group=selection],body .portfolio-inspector[data-scope=selection]:not([data-searching]) [data-scope-group=global]{display:none}
+body .portfolio-inspector .editor-layer{display:block;width:100%;margin:3px 0;padding:9px 10px;border:1px solid transparent;background:transparent;text-align:left;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;color:#c4c6d0}
+body .portfolio-inspector .editor-layer.nested{padding-left:24px}
+body .portfolio-inspector .editor-layer.active{background:#35415d;border-color:#6689d0;color:#edf2ff}
+body .portfolio-inspector .editor-asset{display:flex;align-items:center;gap:7px;padding:7px 0;border-top:1px solid #3e4048}
+body .portfolio-inspector .editor-asset span{flex:1;min-width:0;overflow-wrap:anywhere;color:#b5b8c5;font-size:10px}
+body .portfolio-inspector .editor-progress{padding:10px;background:#2d3547;border-radius:5px;font-size:10px;color:#d4e3ff}
+body .portfolio-inspector progress{display:block;width:100%;height:7px;margin-bottom:8px;accent-color:#9dbaff}
+body .portfolio-inspector .editor-progress span{display:block;margin:7px 0}
+body .portfolio-inspector .debug-actions{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:none;margin:0;padding:11px 14px;background:#2b2c32;border-top:1px solid #141519}
+body .portfolio-inspector .debug-status{position:static;flex:none;margin:0;padding:8px 14px 11px;min-height:39px;max-height:80px;overflow:auto;background:#202126;color:#9cabc9;font-size:10px;line-height:1.5}
+body .portfolio-inspector .debug-status[data-error=true]{color:#ffb5b5}
+body .portfolio-inspector [hidden]{display:none!important}
+body .portfolio-inspector.editor-picking{inset:auto 12px 12px auto;width:auto;max-width:calc(100vw - 24px)}
+body .portfolio-inspector.editor-picking .editor-workspace,body .portfolio-inspector.editor-picking .debug-readout,body .portfolio-inspector.editor-picking .debug-actions,body .portfolio-inspector.editor-picking .debug-status,body .portfolio-inspector.editor-picking .debug-head>div:first-child,body .portfolio-inspector.editor-picking .debug-head-actions>button:not(#editor-pick){display:none}
+body .portfolio-inspector.editor-picking #editor-pick{width:auto;padding:0 10px;font-size:12px}
+body.debug-editing main [data-editable-section]:not([data-editor-locked=true]){cursor:crosshair}
+body.debug-editing main [data-editable-text]{cursor:text;outline-offset:3px}
+body.debug-editing main [data-editable-text]:hover{outline:1px dashed #79abff}
+body.debug-editing main .debug-selected{outline:2px solid #7faaff!important;outline-offset:2px}
+body.debug-editing main .debug-selected::after{content:none!important}
+body.debug-editing main .debug-text-selected{outline:1px solid #edc07f!important}
+body.debug-editing main .editor-hoverable:hover{transform:translate3d(var(--editor-tx,0px),var(--editor-ty,0px),0)!important}
+.editor-hoverable{transition:transform var(--hover-duration,350ms) ease,box-shadow var(--hover-duration,350ms) ease!important}
+.editor-hoverable:hover{transform:translateY(var(--hover-y,0px)) scale(var(--hover-scale,1)) rotate(var(--hover-rotate,0deg))!important;box-shadow:0 8px var(--hover-glow,0px) #ffffff25!important}
+.debug-reduce-motion *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+body.debug-grid-overlay main{background-image:linear-gradient(#70a3ed25 1px,transparent 1px),linear-gradient(90deg,#70a3ed25 1px,transparent 1px);background-size:16px 16px}
+body.debug-outlines main *{outline:1px solid #78a9ef66}
+main [hidden]{display:none!important}
+.editor-custom-section{position:relative;min-height:300px;padding:32px;border-radius:5px;background:#e4e3df;color:#111}
+.editor-custom-section h2{font-size:clamp(30px,4vw,64px);font-weight:400;margin:0 0 20px}
+.editor-split{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.media-placeholder{display:grid;place-items:center;min-height:260px;width:100%;border:1px dashed #888;font:14px/1.5 Arial,sans-serif;color:#777}
+main .editor-media-frame{position:relative;min-height:300px;overflow:hidden}
+main .editor-media-frame>img,main .editor-media-frame>video{display:block;width:100%;height:100%;object-fit:contain}
+main .editor-media-frame:not([data-natural-media=true])>img,main .editor-media-frame:not([data-natural-media=true])>video{position:absolute;inset:0}
+main .editor-media-background{position:relative;isolation:isolate;overflow:hidden;background:#111}
+main .editor-media-background::before{display:none!important}
+main .editor-media-background>img,main .editor-media-background>video{position:absolute;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;filter:none}
+main .editor-media-background>.project-copy,main .editor-media-background>.project-hero-copy{position:relative;z-index:1}
+main [data-media-mode=fullscreen]{grid-column:1/-1!important;width:auto!important;height:100svh!important;min-height:100svh!important;aspect-ratio:auto!important}
+main [data-natural-media=true]>img,main [data-natural-media=true]>video{position:relative!important;height:auto!important;aspect-ratio:auto;inset:auto;max-width:100%}
+main .editor-caption{position:relative;z-index:2;margin:0;padding:12px 16px;background:#111c;color:#fff;font:12px/1.5 Arial,sans-serif}
+main .editor-media-frame>.editor-caption{position:absolute;bottom:0;left:0;right:0}
+main .editor-media-frame>:not(img):not(video):not(audio){position:relative;z-index:1}
+main .project[data-media-mode=contain],main .project[data-media-mode=contain]::before{background-size:cover,contain!important;background-repeat:no-repeat}
+main .project[data-media-mode=fill],main .project[data-media-mode=fill]::before{background-size:100% 100%!important}
+body .portfolio-inspector #editor-tool-type .debug-group:has(#landing-type-target):not([hidden]){display:block}
+main [data-media-missing=true]{display:block;min-height:160px;background:#ddd}
+@media(max-width:600px){body .portfolio-inspector{inset:6px;width:calc(100vw - 12px);border-radius:9px}body .portfolio-inspector .editor-rail{flex-basis:54px;padding:7px 3px}body .portfolio-inspector .editor-inspector{padding-left:10px;padding-right:10px}body .portfolio-inspector label{grid-template-columns:87px minmax(0,1fr)}body .portfolio-inspector label.editor-range-row{grid-template-columns:87px minmax(20px,1fr) 68px}.editor-split{grid-template-columns:1fr}}

@@ -1,0 +1,11 @@
+/* One spacing owner: canvas edges, section gap, grid gap, content inset. */
+main{display:flex!important;flex-direction:column!important;gap:var(--section-gap,8px)!important;padding:calc(70px + var(--canvas-y,8px)) var(--canvas-x,8px) var(--canvas-y,8px)!important;margin:0 auto!important;box-sizing:border-box}
+main>.panel,main>[data-project-grid]{margin:0!important;width:auto!important;min-width:0}
+main>[data-project-grid]{padding:0!important;column-gap:var(--grid-x,8px)!important;row-gap:var(--grid-y,8px)!important}
+main>[data-project-grid]>.panel{margin:0!important;min-width:0}
+main .project-copy,main .hero-content,main>.about,main>.contact,main>.custom-section{padding:var(--global-pad-y,32px) var(--global-pad-x,32px)!important;box-sizing:border-box}
+.debug-menu .spacing-help{font-size:11px;line-height:1.5;color:#aaa}
+.debug-menu .exact-value{display:inline-flex;align-items:center;gap:4px;grid-column:2/-1;justify-self:end}
+.debug-menu .exact-value input{width:76px;min-width:0;padding:6px;background:#222;color:#fff;border:1px solid #555;border-radius:5px;font:inherit}
+.debug-menu label[hidden]{display:none!important}
+@media(max-width:640px){main{padding-top:calc(54px + var(--canvas-y,8px))!important}}
