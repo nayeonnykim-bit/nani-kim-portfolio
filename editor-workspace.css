@@ -179,3 +179,7 @@ main .project[data-media-mode=fill],main .project[data-media-mode=fill]::before{
 body .portfolio-inspector #editor-tool-type .debug-group:has(#landing-type-target):not([hidden]){display:block}
 main [data-media-missing=true]{display:block;min-height:160px;background:#ddd}
 @media(max-width:600px){body .portfolio-inspector{inset:6px;width:calc(100vw - 12px);border-radius:9px}body .portfolio-inspector .editor-rail{flex-basis:54px;padding:7px 3px}body .portfolio-inspector .editor-inspector{padding-left:10px;padding-right:10px}body .portfolio-inspector label{grid-template-columns:87px minmax(0,1fr)}body .portfolio-inspector label.editor-range-row{grid-template-columns:87px minmax(20px,1fr) 68px}.editor-split{grid-template-columns:1fr}}
+.editor-snap-guide{position:fixed;z-index:2147483646;pointer-events:none;background:#379dff;box-shadow:0 0 0 1px #379dff22}
+.editor-snap-guide[hidden]{display:none!important}
+.editor-snap-v{top:0;bottom:0;width:1px}
+.editor-snap-h{left:0;right:0;height:1px}
