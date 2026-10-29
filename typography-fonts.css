@@ -1,0 +1,23 @@
+/* Original supplied font files, without subsetting or synthetic weights. */
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaThin.woff') format('woff');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaThinItalic.woff') format('woff');font-weight:100;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaUltraLight.woff') format('woff');font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaUltraLightItalic.woff') format('woff');font-weight:200;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaLight.woff') format('woff');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaLightItalic.woff') format('woff');font-weight:300;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaRegular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelveticaItalic;src:url('assets/HelveticaItalic.woff') format('woff');font-weight:550;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaMedium.woff') format('woff');font-weight:550;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaMediumItaicl.woff') format('woff');font-weight:550;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaBold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaBoldItalic.woff') format('woff');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaBlack.woff') format('woff');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelvetica;src:url('assets/HelveticaBlackItalic.woff') format('woff');font-weight:900;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioHelveticaHeavy;src:url('assets/HelveticaHeavy.woff') format('woff');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioHelveticaHeavy;src:url('assets/HelveticaHeavyItalic.woff') format('woff');font-weight:900;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-Regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-Italic.otf') format('opentype');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-Semibold.otf') format('opentype');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-SemiboldItalic.otf') format('opentype');font-weight:600;font-style:italic;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-Bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:PortfolioCaslon;src:url('assets/ACaslonPro-BoldItalic.otf') format('opentype');font-weight:700;font-style:italic;font-display:swap}
