@@ -1,5 +1,34 @@
 /* Editor chrome is deliberately scoped: closing it does not redesign the portfolio. */
 .project::before{background-size:var(--editor-bg-size,cover)!important;background-repeat:no-repeat}
+main video{pointer-events:none!important;border:0!important;outline:none!important}
+main video::-webkit-media-controls,main video::-webkit-media-controls-enclosure{display:none!important}
+main .editor-photo-gallery{position:relative;display:grid;gap:var(--gallery-gap,8px);grid-template-columns:repeat(var(--gallery-columns,2),minmax(0,1fr));padding:0!important;min-height:120px;border-radius:var(--card-radius,5px);overflow:hidden;background:transparent}
+main .editor-photo-gallery:empty::before{content:'Photo gallery · add multiple photos in the Media tab';display:grid;place-items:center;min-height:240px;color:#777;font:14px Arial}
+main .editor-photo-gallery>.gallery-slide{position:relative;margin:0;min-width:0;overflow:hidden;border-radius:inherit}
+main .editor-photo-gallery>.gallery-slide>img{display:block;width:100%;height:var(--gallery-height,500px);object-fit:var(--gallery-fit,contain);object-position:var(--gallery-position,center center)}
+main .editor-photo-gallery[data-gallery-mode=slideshow]{display:block;height:var(--gallery-height,500px)}
+main .editor-photo-gallery[data-gallery-mode=slideshow]>.gallery-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity var(--gallery-speed,.5s) ease}
+main .editor-photo-gallery[data-gallery-mode=slideshow]>.gallery-slide.gallery-active{opacity:1;pointer-events:auto}
+main .editor-photo-gallery[data-gallery-mode=slideshow]>.gallery-slide>img{width:100%;height:100%}
+main .editor-photo-gallery[data-gallery-mode=columnized]{display:block;column-count:var(--gallery-columns,2);column-gap:var(--gallery-gap,8px)}
+main .editor-photo-gallery[data-gallery-mode=columnized]>.gallery-slide{break-inside:avoid;margin-bottom:var(--gallery-gap,8px)}
+main .editor-photo-gallery[data-gallery-mode=columnized]>.gallery-slide>img{height:auto}
+main .editor-photo-gallery[data-gallery-mode=justify]{display:flex;flex-wrap:wrap}
+main .editor-photo-gallery[data-gallery-mode=justify]>.gallery-slide{flex:1 1 240px}
+main .editor-photo-gallery[data-gallery-mode=freeform]{display:block;height:var(--gallery-height,500px)}
+main .editor-photo-gallery[data-gallery-mode=freeform]>.gallery-slide{position:absolute;left:var(--slide-x,0%);top:var(--slide-y,0px);width:var(--slide-width,30%)}
+main .editor-photo-gallery[data-gallery-mode=freeform]>.gallery-slide>img{height:auto}
+main .editor-photo-gallery[data-gallery-fullwidth=false]{width:75%!important;align-self:center}
+main .editor-photo-gallery figcaption{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:#0009;color:white;font:14px/1.4 Arial}
+main .editor-photo-gallery[data-gallery-captions=false] figcaption{display:none}
+main .gallery-navigation{position:absolute;z-index:3;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+main .gallery-navigation button{border:0;border-radius:5px;padding:8px 12px;background:#111b;color:white;cursor:pointer}
+main .gallery-dot[aria-current=true]{background:white;color:black}
+body.debug-editing main .gallery-navigation{pointer-events:none}
+/* Keep the same Pulse thumbnail reveal for uploaded images and videos. */
+main [data-project-grid] .project>img,main [data-project-grid] .project>video{filter:blur(3px) brightness(.68)!important;transform:scale(1.025);transition:filter .5s ease,transform .7s ease!important}
+main [data-project-grid] .project:hover>img,main [data-project-grid] .project:hover>video,main [data-project-grid] .project:focus-visible>img,main [data-project-grid] .project:focus-visible>video{filter:blur(0) brightness(.68)!important;transform:scale(1.045)}
+@media(prefers-reduced-motion:reduce){main [data-project-grid] .project>img,main [data-project-grid] .project>video{transition:none!important}}
 main [data-editable-section][hidden]{display:none!important}
 body .portfolio-inspector{width:min(var(--editor-panel-width,470px),calc(100vw - 24px))!important;height:min(var(--editor-panel-height,calc(100vh - 24px)),calc(100vh - 24px))!important;bottom:auto!important}
 body .portfolio-inspector .editor-panel-size{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 12px;background:#292a30;font-size:10px;flex:none}
