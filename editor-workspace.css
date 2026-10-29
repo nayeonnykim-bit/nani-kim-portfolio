@@ -183,3 +183,14 @@ main [data-media-missing=true]{display:block;min-height:160px;background:#ddd}
 .editor-snap-guide[hidden]{display:none!important}
 .editor-snap-v{top:0;bottom:0;width:1px}
 .editor-snap-h{left:0;right:0;height:1px}
+.portfolio-inspector .editor-panel-drag-handle{cursor:grab;touch-action:none;user-select:none}
+.portfolio-inspector .editor-panel-drag-handle.is-dragging{cursor:grabbing}
+.portfolio-inspector .editor-panel-drag-handle:focus-visible{outline:2px solid #83aaff;outline-offset:-3px}
+.editor-drag-preview{position:fixed;inset:0;z-index:99980;pointer-events:none;color:#2196ff}
+.editor-drag-preview[hidden]{display:none!important}
+.editor-drag-bounds{position:absolute;border:1px solid #2196ff;background:#2196ff08}
+.editor-drag-axis{position:absolute;opacity:.65;border-color:#2196ff;border-style:dashed;border-width:0}
+.editor-drag-axis.axis-left,.editor-drag-axis.axis-center-x,.editor-drag-axis.axis-right{top:0;bottom:0;border-left-width:1px}
+.editor-drag-axis.axis-top,.editor-drag-axis.axis-center-y,.editor-drag-axis.axis-bottom{left:0;right:0;border-top-width:1px}
+.editor-drag-axis.is-aligned{border-color:#0ca785;border-style:solid;opacity:1}
+.editor-drag-distance{position:absolute;transform:translate(-50%,-50%);padding:3px 6px;border-radius:4px;background:#167acb;color:white;font:11px/1.3 Arial,sans-serif;white-space:nowrap;box-shadow:0 1px 4px #0002}
