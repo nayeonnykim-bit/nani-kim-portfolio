@@ -197,3 +197,8 @@ main [data-media-missing=true]{display:block;min-height:160px;background:#ddd}
 body main .editor-spacer{display:block!important;position:relative;flex:0 0 auto!important;min-height:0!important;height:80px;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
 body.debug-editing main .editor-spacer{outline:1px dashed #83aaff88;outline-offset:-1px;background:repeating-linear-gradient(135deg,transparent 0 10px,#83aaff08 10px 11px)!important}
 body.debug-editing main .editor-spacer::before{content:'Spacer · ' attr(data-spacer-height) ' px';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:11px/1.2 Arial,sans-serif;color:#6482b8;pointer-events:none;white-space:nowrap}
+.portfolio-inspector [data-add]{cursor:grab;touch-action:none}
+.portfolio-inspector [data-add].editor-add-dragging{cursor:grabbing;outline:2px solid #83aaff}
+.editor-add-drop-marker{position:fixed;height:3px;background:#168de2;z-index:99980;pointer-events:none;box-shadow:0 0 0 3px #168de222}
+.editor-add-drop-marker[hidden]{display:none!important}
+.editor-add-drop-marker span{position:absolute;left:8px;bottom:5px;padding:4px 8px;border-radius:4px;background:#168de2;color:white;font:12px/1.3 Arial,sans-serif;white-space:nowrap}
