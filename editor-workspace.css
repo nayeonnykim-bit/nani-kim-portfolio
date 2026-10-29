@@ -1,6 +1,8 @@
 /* Editor chrome is deliberately scoped: closing it does not redesign the portfolio. */
 .project::before{background-size:var(--editor-bg-size,cover)!important;background-repeat:no-repeat}
 main video{pointer-events:none!important;border:0!important;outline:none!important}
+.editor-move-handle{position:fixed;z-index:85;padding:5px 10px;border:1px solid #fff8;border-radius:5px;background:#247dd5;color:white;font:600 11px/18px Arial,sans-serif;cursor:move;touch-action:none;user-select:none}
+.editor-move-handle[hidden]{display:none!important}
 main>.editor-text-only{display:block;min-height:0!important;height:auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111;overflow:visible}
 main .editor-plain-text{display:block;min-height:1em;max-width:100%;margin:0;padding:0;background:transparent;color:inherit;font-size:14px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
 main video::-webkit-media-controls,main video::-webkit-media-controls-enclosure{display:none!important}
