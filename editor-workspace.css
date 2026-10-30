@@ -203,5 +203,5 @@ body.debug-editing main .editor-spacer::before{content:'Spacer · ' attr(data-sp
 .editor-add-drop-marker[hidden]{display:none!important}
 .editor-add-drop-marker span{position:absolute;left:8px;bottom:5px;padding:4px 8px;border-radius:4px;background:#168de2;color:white;font:12px/1.3 Arial,sans-serif;white-space:nowrap}
 body main .editor-line{display:block!important;position:relative;flex:0 0 auto!important;min-height:0!important;padding:var(--line-space-top,16px) 0 var(--line-space-bottom,16px)!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
-body main .editor-line>hr{display:block!important;height:0!important;margin:0!important;padding:0!important;border:0!important;border-top:var(--line-thickness,1px) solid var(--line-color,#111111)!important;width:100%!important;box-sizing:border-box!important}
+body main .editor-line>hr{display:block!important;height:0!important;margin:0!important;padding:0!important;border:0!important;border-top:var(--line-thickness,1px) solid var(--line-color,#bbbbbb)!important;width:100%!important;box-sizing:border-box!important}
 body.debug-editing main .editor-line{outline:1px dashed #83aaff66;outline-offset:-1px}
