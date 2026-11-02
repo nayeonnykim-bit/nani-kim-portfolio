@@ -1,0 +1,12 @@
+/* Add the supplied poster set once, without replacing an existing page draft. */
+export function installOclockPosters(main){
+  const key='portfolio-oclock-posters-v1';
+  if(main.querySelector('[data-oclock-posters]'))return false;
+  try{if(localStorage.getItem(key))return false;}catch{}
+  let row=[...main.querySelectorAll(':scope > .editor-columns')].find(r=>r.querySelectorAll(':scope > .editor-column').length===3&&!r.querySelector('img,video,audio,.editor-photo-gallery,[data-column-text]')&&[...r.querySelectorAll(':scope > .editor-column')].every(c=>!c.textContent.trim()||c.querySelector('.media-placeholder')));
+  if(!row){row=document.createElement('section');row.className='editor-columns panel';row.dataset.editableSection='';row.dataset.editorCreated='columns';row.dataset.columnTemplate='repeat(3,minmax(0,1fr))';row.style.gridTemplateColumns='repeat(3,minmax(0,1fr))';for(let i=0;i<3;i++){const col=document.createElement('div');col.className='editor-column';col.dataset.editableSection='';row.append(col);}const next=main.querySelector(':scope > .next-project');next?next.before(row):main.append(row);}
+  row.dataset.oclockPosters='v1';row.dataset.layerName='O’CLOCK posters · 3 columns';row.classList.add('oclock-poster-row');row.style.removeProperty('--column-height');
+  const groups=[['Typography posters',['type-serif','type-sans']],['3D posters',['clock','mark']],['Radio poster',['radio']]];
+  [...row.querySelectorAll(':scope > .editor-column')].forEach((col,i)=>{col.replaceChildren();const gallery=document.createElement('section');gallery.className='editor-photo-gallery';gallery.dataset.editableSection='';Object.assign(gallery.dataset,{editorCreated:'gallery',layerName:groups[i][0],galleryMode:'slideshow',galleryColumns:'1',galleryGap:'8',gallerySpeed:'0',galleryInterval:'1.2',galleryEffect:'fade',galleryFrame:'original',galleryNav:'single',galleryFit:'contain',galleryHorizontal:'center',galleryVertical:'center',galleryAutoplay:'true',galleryCaptions:'true',galleryFullwidth:'true',galleryZoom:'false',galleryShuffle:'false',galleryPauseHover:'false',galleryPreview:'true'});groups[i][1].forEach(name=>{const figure=document.createElement('figure');figure.className='gallery-slide';const img=document.createElement('img');img.src='./assets/oclock-poster-'+name+'.jpg';img.width=1200;img.height=1800;img.alt='O’CLOCK '+name.replaceAll('-',' ')+' poster';img.decoding='async';figure.append(img);gallery.append(figure);});col.append(gallery);});
+  try{localStorage.setItem(key,'installed');}catch{}return true;
+}

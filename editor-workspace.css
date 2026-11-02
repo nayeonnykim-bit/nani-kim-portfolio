@@ -205,3 +205,9 @@ body.debug-editing main .editor-spacer::before{content:'Spacer · ' attr(data-sp
 body main .editor-line{display:block!important;position:relative;flex:0 0 auto!important;min-height:0!important;padding:var(--line-space-top,16px) 0 var(--line-space-bottom,16px)!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
 body main .editor-line>hr{display:block!important;height:0!important;margin:0!important;padding:0!important;border:0!important;border-top:var(--line-thickness,1px) solid var(--line-color,#bbbbbb)!important;width:100%!important;box-sizing:border-box!important}
 body.debug-editing main .editor-line{outline:1px dashed #83aaff66;outline-offset:-1px}
+main .editor-photo-gallery[data-gallery-mode=slideshow][data-gallery-frame=original]{height:var(--gallery-original-height,500px)!important;min-height:0!important}
+main .editor-photo-gallery[data-gallery-mode=slideshow][data-gallery-effect=slide]>.gallery-slide{transition:left var(--gallery-speed,.5s) ease,opacity var(--gallery-speed,.5s) ease}
+main .editor-photo-gallery[data-gallery-nav=single]{cursor:pointer}
+main .editor-column>.editor-photo-gallery{width:100%!important;min-width:0;align-self:stretch}
+body main .oclock-poster-row{min-height:0!important;align-items:start!important}
+body main .oclock-poster-row>.editor-column{min-height:0!important;padding:0!important;background:transparent!important}
