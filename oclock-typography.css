@@ -16,6 +16,7 @@
 .type-weight-label{display:block;margin-top:14px;font-size:16px}
 .type-characters{font-synthesis:none}
 .oclock-hover-card{position:relative!important}
+.oclock-hover-card:not(.editor-media-frame){min-height:120px!important}
 .oclock-hover-card>.oclock-hover-caption{position:absolute!important;inset:auto auto clamp(16px,2vw,32px) clamp(16px,2vw,32px)!important;width:auto!important;max-width:calc(100% - 32px)!important;min-height:0!important;margin:0!important;padding:0!important;text-align:left!important;transform:none!important;z-index:2;opacity:.18;transition:opacity .25s ease;white-space:pre-line}
 .oclock-hover-card:hover>.oclock-hover-caption,.oclock-hover-card:focus-within>.oclock-hover-caption{opacity:1}
 @media(hover:none){.oclock-hover-card>.oclock-hover-caption{opacity:1}}
