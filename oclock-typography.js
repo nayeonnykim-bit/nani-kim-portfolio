@@ -21,7 +21,7 @@ function hoverCards(){
     if(!material&&!swatch)return;
     card.classList.add('oclock-hover-card');
     if(material&&!text){text=document.createElement('p');text.className='editor-column-text';text.dataset.columnText='';text.dataset.editableText='';const row=card.parentElement;const cards=[...row.children].filter(el=>el.classList.contains('editor-column'));const labels=['Chrome','Brushed Chrome','Frost Glass','Glass'];text.textContent=cards.length===4?labels[cards.indexOf(card)]:(img.alt.replace(/^O.CLOCK Material Original\s*/i,'')||'Texture');card.append(text);}
-    if(text)text.classList.add('oclock-hover-caption');
+    if(text){text.classList.add('oclock-hover-caption');if(text.style.textAlign!=='left')text.style.setProperty('text-align','left','important');if(text.style.padding!=='0px')text.style.setProperty('padding','0px','important');}
   });
 }
 function bind(card){if(bound.has(card))return;const values=steps[card.dataset.font],slider=card.querySelector(".type-weight-slider"),knob=card.querySelector(".type-weight-knob"),number=card.querySelector(".type-weight-number"),label=card.querySelector(".type-weight-label"),preview=card.querySelector(".type-characters");if(!values||!slider||!knob||!number||!label||!preview)return;bound.add(card);delete card.dataset.weightBound;let current=Number(slider.getAttribute('aria-valuenow'))||400,dragging=false;
