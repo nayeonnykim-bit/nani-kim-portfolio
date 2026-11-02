@@ -13,6 +13,17 @@ const markup=()=>`<section class="oclock-type-lab" data-editable-section data-la
 </section>`;
 const steps={helvetica:[[100,"Thin"],[200,"UltraLight"],[300,"Light"],[400,"Regular"],[550,"Medium"],[700,"Bold"],[900,"Black"]],caslon:[[400,"Regular"],[600,"Semibold"],[700,"Bold"]]};
 const bound=new WeakSet();
+function hoverCards(){
+  document.querySelectorAll('.editor-column').forEach(card=>{
+    const img=card.querySelector('img'), material=img&&/O.CLOCK.Material/i.test((img.dataset.filename||'')+' '+img.alt);
+    let text=card.querySelector('[data-column-text]');
+    const swatch=text&&/CMYK\s*:/i.test(text.textContent)&&/RGB\s*:/i.test(text.textContent);
+    if(!material&&!swatch)return;
+    card.classList.add('oclock-hover-card');
+    if(material&&!text){text=document.createElement('p');text.className='editor-column-text';text.dataset.columnText='';text.dataset.editableText='';const row=card.parentElement;const cards=[...row.children].filter(el=>el.classList.contains('editor-column'));const labels=['Chrome','Brushed Chrome','Frost Glass','Glass'];text.textContent=cards.length===4?labels[cards.indexOf(card)]:(img.alt.replace(/^O.CLOCK Material Original\s*/i,'')||'Texture');card.append(text);}
+    if(text)text.classList.add('oclock-hover-caption');
+  });
+}
 function bind(card){if(bound.has(card))return;const values=steps[card.dataset.font],slider=card.querySelector(".type-weight-slider"),knob=card.querySelector(".type-weight-knob"),number=card.querySelector(".type-weight-number"),label=card.querySelector(".type-weight-label"),preview=card.querySelector(".type-characters");if(!values||!slider||!knob||!number||!label||!preview)return;bound.add(card);delete card.dataset.weightBound;let current=Number(slider.getAttribute('aria-valuenow'))||400,dragging=false;
 const family=card.dataset.font==='caslon'?'PortfolioCaslon':'PortfolioHelvetica';
 const faces=values.map(([weight,name])=>({weight,name,family,style:'normal'}));
@@ -27,7 +38,7 @@ slider.addEventListener("pointerdown",e=>{e.preventDefault();e.stopPropagation()
 slider.addEventListener('click',e=>e.stopPropagation());
 slider.addEventListener("keydown",e=>{const i=values.findIndex(s=>s[0]===current);let next;if(e.key==='ArrowRight'||e.key==='ArrowUp')next=values[Math.min(values.length-1,i+1)][0];if(e.key==='ArrowLeft'||e.key==='ArrowDown')next=values[Math.max(0,i-1)][0];if(e.key==='Home')next=values[0][0];if(e.key==='End')next=values.at(-1)[0];if(next!==undefined){e.preventDefault();e.stopPropagation();apply(next);save();}});
 apply(current,active);}
-function init(){let section=document.querySelector("[data-oclock-type-lab]");if(!section){const target=document.querySelector(".project-info");if(!target)return;target.insertAdjacentHTML("afterend",markup());section=document.querySelector("[data-oclock-type-lab]");window.__portfolioEditor?.select?.(section);window.__portfolioEditor?.save?.(false);}section.querySelectorAll(".type-specimen").forEach(bind);}
-const observe=()=>{init();const main=document.querySelector('main');if(main)new MutationObserver(records=>{if(records.some(r=>[...r.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('.type-specimen,[data-oclock-type-lab]')||n.querySelector?.('.type-specimen')))))main.querySelectorAll('.type-specimen').forEach(bind);}).observe(main,{childList:true,subtree:true});};
+function init(){hoverCards();let section=document.querySelector("[data-oclock-type-lab]");if(!section){const target=document.querySelector(".project-info");if(!target)return;target.insertAdjacentHTML("afterend",markup());section=document.querySelector("[data-oclock-type-lab]");window.__portfolioEditor?.select?.(section);window.__portfolioEditor?.save?.(false);}section.querySelectorAll(".type-specimen").forEach(bind);}
+const observe=()=>{init();const main=document.querySelector('main');if(main)new MutationObserver(records=>{if(records.some(r=>r.addedNodes.length)){hoverCards();main.querySelectorAll('.type-specimen').forEach(bind);}}).observe(main,{childList:true,subtree:true});};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",observe);else observe();
 })();
