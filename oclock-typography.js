@@ -11,12 +11,13 @@ const markup=()=>`<section class="oclock-type-lab" data-editable-section data-la
     <div class="type-weight-control"><div class="type-weight-slider" role="slider" tabindex="0" aria-label="Adobe Caslon Pro font weight" aria-valuemin="400" aria-valuemax="700" aria-valuenow="400"><span class="type-weight-knob"></span></div><output class="type-weight-number">400</output></div><span class="type-weight-label">Regular</span>
   </article>
 </section>`;
-const schibstedSteps=[[400,"Regular"],[500,"Medium"],[600,"Semibold"],[700,"Bold"],[800,"Extra bold"],[900,"Black"]];const steps={helvetica:schibstedSteps,caslon:schibstedSteps};
+const steps={helvetica:[[100,"Thin"],[200,"UltraLight"],[300,"Light"],[400,"Regular"],[550,"Medium"],[700,"Bold"],[900,"Black"]],caslon:[[400,"Regular"],[600,"Semibold"],[700,"Bold"]]};
 const bound=new WeakSet();
 function bind(card){if(bound.has(card))return;const values=steps[card.dataset.font],slider=card.querySelector(".type-weight-slider"),knob=card.querySelector(".type-weight-knob"),number=card.querySelector(".type-weight-number"),label=card.querySelector(".type-weight-label"),preview=card.querySelector(".type-characters");if(!values||!slider||!knob||!number||!label||!preview)return;bound.add(card);delete card.dataset.weightBound;let current=Number(slider.getAttribute('aria-valuenow'))||400,dragging=false;
-const family='Schibsted Grotesk';
+const family=card.dataset.font==='caslon'?'PortfolioCaslon':'PortfolioHelvetica';
 const faces=values.map(([weight,name])=>({weight,name,family,style:'normal'}));
-faces.push(...faces.map(face=>({...face,name:face.name==='Regular'?'Italic':face.name+' Italic',style:'italic'})));
+if(card.dataset.font==='helvetica')faces.push({weight:900,name:'Heavy',family:'PortfolioHelveticaHeavy',style:'normal'});
+faces.push(...faces.map(face=>({...face,name:face.name==='Regular'?'Italic':face.name+' Italic',style:'italic',...(card.dataset.font==='helvetica'&&face.name==='Regular'?{weight:550,family:'PortfolioHelveticaItalic'}:{})})));
 card.querySelectorAll('.type-face-select').forEach(el=>el.remove());
 let active=faces.find(face=>face.name===card.dataset.fontFace)||null;
 const apply=(raw,face)=>{const next=values.reduce((a,b)=>Math.abs(b[0]-raw)<Math.abs(a[0]-raw)?b:a);active=face||faces.find(f=>f.weight===next[0]&&f.style===(active?.style||'normal'))||faces.find(f=>f.weight===next[0]);current=active.weight;card.dataset.fontFace=active.name;[preview,...preview.children].forEach(row=>{row.style.setProperty('font-weight',String(current),'important');row.style.setProperty('font-family',active.family,'important');row.style.setProperty('font-style',active.style,'important');row.style.setProperty('font-synthesis','none');});number.value=current;number.textContent=current;label.textContent=active.name;slider.setAttribute("aria-valuemin",values[0][0]);slider.setAttribute("aria-valuemax",values.at(-1)[0]);slider.setAttribute("aria-valuenow",current);slider.setAttribute('aria-valuetext',current+' '+active.name);knob.style.left=((current-values[0][0])/(values.at(-1)[0]-values[0][0])*100)+"%";};

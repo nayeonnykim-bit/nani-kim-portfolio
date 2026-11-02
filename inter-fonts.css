@@ -1,0 +1,6 @@
+@font-face{font-family:Portfolio;src:url('./assets/Inter-Variable.ttf') format('truetype');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:Portfolio;src:url('./assets/Inter-Italic-Variable.ttf') format('truetype');font-style:italic;font-weight:100 900;font-display:swap}
+/* Keep the exact original Regular face, including its original metrics. */
+@font-face{font-family:Portfolio;src:url('./assets/Inter-Original-Regular.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:Inter;src:url('./assets/Inter-Variable.ttf') format('truetype');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:Inter;src:url('./assets/Inter-Italic-Variable.ttf') format('truetype');font-style:italic;font-weight:100 900;font-display:swap}
