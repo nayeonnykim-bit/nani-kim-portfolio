@@ -14,6 +14,8 @@ const markup=()=>`<section class="oclock-type-lab" data-editable-section data-la
 const steps={helvetica:[[100,"Thin"],[200,"UltraLight"],[300,"Light"],[400,"Regular"],[550,"Medium"],[700,"Bold"],[900,"Black"]],caslon:[[400,"Regular"],[600,"Semibold"],[700,"Bold"]]};
 const bound=new WeakSet();
 function hoverCards(){
+  const next=document.querySelector('.next-project');
+  if(next&&!next.hasAttribute('data-next-style-restored')){for(const property of ['min-height','text-align','width'])next.style.removeProperty(property);next.setAttribute('data-next-style-restored','1');}
   document.querySelectorAll('.editor-column').forEach(card=>{
     const img=card.querySelector('img'), material=img&&/O.CLOCK.Material/i.test((img.dataset.filename||'')+' '+img.alt);
     let text=card.querySelector('[data-column-text]');
