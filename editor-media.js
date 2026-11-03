@@ -48,22 +48,30 @@
       return { blob: file.slice(0, file.size, type), warning: 'Animation preserved; not recompressed. A short video usually uses less bandwidth.' };
     }
     const url = URL.createObjectURL(file), img = new Image();
-    let canvas;
+    let canvas, bitmap;
     try {
       const ready = event(img, 'load', signal); img.src = url; await ready; check(signal);
-      if (!img.naturalWidth || img.naturalWidth * img.naturalHeight > 64000000) throw new Error('Image exceeds the 64-megapixel safety limit. Resize the original first.');
+      if (!img.naturalWidth || !img.naturalHeight) throw new Error('The image dimensions could not be read.');
+      // Large portfolio exports are common. Decode them directly at the selected
+      // web size when the browser supports it instead of rejecting by megapixels.
+      // This keeps a 10,800px source from occupying a full-size canvas in memory.
       const ratio = Math.min(1, profile.edge / Math.max(img.naturalWidth, img.naturalHeight));
       const width = Math.max(1, Math.round(img.naturalWidth * ratio)), height = Math.max(1, Math.round(img.naturalHeight * ratio));
       canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
       const context = canvas.getContext('2d'); if (!context) throw new Error('Image processing is unavailable in this browser.');
-      context.drawImage(img, 0, 0, width, height); progress(.4, 'Compressing image…');
+      if (ratio < 1 && typeof createImageBitmap === 'function') {
+        progress(.2, 'Resizing high-resolution image…');
+        bitmap = await createImageBitmap(file, { resizeWidth: width, resizeHeight: height, resizeQuality: 'high' });
+        check(signal); context.drawImage(bitmap, 0, 0, width, height);
+      } else context.drawImage(img, 0, 0, width, height);
+      progress(.4, 'Compressing image…');
       let quality = profile.quality, blob = await canvasBlob(canvas, quality);
       while (blob.size > profile.target && quality > .46) { check(signal); quality -= .1; const candidate = await canvasBlob(canvas, quality); if (candidate.size < blob.size) blob = candidate; }
       check(signal);
       // Preserve the original if re-encoding increases its file size. No upscaling.
       const smaller = blob.size < file.size;
       return { blob: smaller ? blob : file.slice(0, file.size, type), width: smaller ? width : img.naturalWidth, height: smaller ? height : img.naturalHeight, warning: smaller ? '' : 'Original was already smaller; kept without quality loss.' };
-    } finally { URL.revokeObjectURL(url); img.src = ''; if (canvas) { canvas.width = 1; canvas.height = 1; } }
+    } finally { bitmap?.close(); URL.revokeObjectURL(url); img.src = ''; if (canvas) { canvas.width = 1; canvas.height = 1; } }
   }
   async function video(file, type, profile, signal, progress) {
     if (file.size > 100 * MB) throw new Error('Video limit: 100 MB. Export a smaller MP4 or use a hosted video URL for long films.');
