@@ -41,7 +41,9 @@
     if(!narrow){for(const el of adapted){const original=responsiveOriginals.get(el)||{};for(const [prop,[value,priority]] of Object.entries(original))if(value)el.style.setProperty(prop,value,priority);else el.style.removeProperty(prop);responsiveOriginals.delete(el);}adapted.clear();}
   };
   adaptMedia();window.addEventListener('resize',adaptMedia);
-  const mediaObserver=new MutationObserver(()=>{if(innerWidth<=980)adaptMedia();});
+  const lockCardRadius=()=>document.querySelectorAll('main .panel,main .editor-column,main .editor-media-frame,main .gallery-slide,main .project-gallery figure,main .custom-section,main .next-project,main .project-hero').forEach(el=>{if(el.style.getPropertyValue('border-radius')!=='10px'||el.style.getPropertyPriority('border-radius')!=='important')el.style.setProperty('border-radius','10px','important');});
+  lockCardRadius();
+  const mediaObserver=new MutationObserver(()=>{if(innerWidth<=980)adaptMedia();lockCardRadius();});
   mediaObserver.observe(document.querySelector('main'),{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
   if('IntersectionObserver' in window){
     const hoverObserver=new IntersectionObserver(entries=>{for(const entry of entries)entry.target.classList.toggle('in-view',entry.isIntersecting&&entry.intersectionRatio>=.45);},{threshold:[0,.25,.45,.65,1]});
