@@ -119,8 +119,8 @@ body main :is(.panel,.editor-column,.editor-media-frame,.gallery-slide,.project-
 body main .works[data-project-grid]{column-gap:14px!important;row-gap:14px!important}
 body main .editor-columns{column-gap:14px!important;row-gap:14px!important}
 body main .project-gallery{column-gap:14px!important;row-gap:14px!important}
-body main [data-project-grid] .project{--scroll-blur:8px}
-body main [data-project-grid] .project::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;backdrop-filter:blur(var(--scroll-blur,8px));-webkit-backdrop-filter:blur(var(--scroll-blur,8px))}
+body main [data-project-grid] .project{--scroll-blur:5px}
+body main [data-project-grid] .project::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;backdrop-filter:blur(var(--scroll-blur,5px));-webkit-backdrop-filter:blur(var(--scroll-blur,5px))}
 body main [data-project-grid] .project-copy{position:relative;z-index:1}
 @media(max-width:980px){body .project-nav-links{display:none!important}body main .works[data-project-grid],body main .editor-columns,body main .project-gallery{row-gap:16px!important;column-gap:16px!important}}
 @media(max-width:640px){body main .works[data-project-grid],body main .editor-columns,body main .project-gallery{row-gap:16px!important}}
@@ -143,8 +143,8 @@ body main .project-hero h1{letter-spacing:-.025em!important;line-height:.96!impo
 body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card{height:120px!important;min-height:120px!important;max-height:120px!important}
 /* Scroll position, rather than hover, reveals palette labels and media at every width. */
 body main .oclock-hover-card>.oclock-hover-caption,
-body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.18)!important;transition:none!important}
-body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .12s linear}
+body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.38)!important;transition:opacity .18s ease-out!important}
+body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .18s ease-out}
 @media(prefers-reduced-motion:reduce){body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:none!important}}
 /* Text sections follow the page canvas in both visual modes at every width. */
 body main .editor-text-only{background:transparent!important}

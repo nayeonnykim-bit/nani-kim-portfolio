@@ -55,7 +55,7 @@
     observeHover();const hoverMount=new MutationObserver(observeHover);hoverMount.observe(document.querySelector('main'),{childList:true,subtree:true});
   }
   const revealSelector='[data-project-grid] .project,.oclock-hover-card,.editor-media-frame:not(.oclock-hover-card),.editor-photo-gallery>.gallery-slide,.project-gallery figure:not(.editor-media-frame)';
-  const updateScrollReveal=()=>{const viewport=window.innerHeight||1,reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;for(const card of document.querySelectorAll(revealSelector)){const box=card.getBoundingClientRect();const progress=reduced?1:Math.max(0,Math.min(1,(viewport-box.top)/(viewport*.72)));card.style.setProperty('--scroll-blur',`${(7*(1-progress)).toFixed(2)}px`);card.style.setProperty('--reveal-opacity',(0.18+0.82*progress).toFixed(3));}};
+  const updateScrollReveal=()=>{const viewport=window.innerHeight||1,reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;for(const card of document.querySelectorAll(revealSelector)){const box=card.getBoundingClientRect();const position=Math.max(0,Math.min(1,(viewport*.94-box.top)/(viewport*.74)));const progress=reduced?1:position*position*(3-2*position);card.style.setProperty('--scroll-blur',`${(5*(1-progress)).toFixed(2)}px`);card.style.setProperty('--reveal-opacity',(0.38+0.62*progress).toFixed(3));}};
   let revealFrame=0;const scheduleScrollReveal=()=>{if(revealFrame)return;revealFrame=requestAnimationFrame(()=>{revealFrame=0;updateScrollReveal();});};
   window.addEventListener('scroll',scheduleScrollReveal,{passive:true});window.addEventListener('resize',scheduleScrollReveal);
   updateScrollReveal();
