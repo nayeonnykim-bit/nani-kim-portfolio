@@ -134,3 +134,10 @@ body::before{height:calc(var(--desktop-edge) + 1px)!important;background:#fff!im
 @media(max-width:980px){body::before{height:13px!important}}
 @media(max-width:640px){body::before{height:9px!important}}
 html:has(body.portfolio-dark),body.portfolio-dark,body.portfolio-dark main,body.portfolio-dark .works[data-project-grid],body.portfolio-dark::before{background:#111!important}
+/* A continuous header field with equal space above and below the shorter bar. */
+:root{--nav-y:16px;--nav-height:52px}
+body .nav-wrap,body .project-nav{top:var(--nav-y)!important;height:var(--nav-height)!important;min-height:var(--nav-height)!important;padding:4px 10px!important}
+body main{padding-top:calc(var(--nav-y) * 2 + var(--nav-height))!important}
+body::before{height:calc(var(--nav-y) * 2 + var(--nav-height))!important}
+@media(max-width:980px){:root{--nav-y:10px;--nav-height:50px}body .nav-wrap,body .project-nav{padding:4px 14px!important}}
+@media(max-width:640px){:root{--nav-y:8px;--nav-height:46px}body .nav-wrap,body .project-nav{padding:3px 10px!important}}
