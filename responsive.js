@@ -41,7 +41,11 @@
     if(!narrow){for(const el of adapted){const original=responsiveOriginals.get(el)||{};for(const [prop,[value,priority]] of Object.entries(original))if(value)el.style.setProperty(prop,value,priority);else el.style.removeProperty(prop);responsiveOriginals.delete(el);}adapted.clear();}
   };
   adaptMedia();window.addEventListener('resize',adaptMedia);
-  const lockCardRadius=()=>document.querySelectorAll('main .panel,main .editor-column,main .editor-media-frame,main .gallery-slide,main .project-gallery figure,main .custom-section,main .next-project,main .project-hero').forEach(el=>{if(el.style.getPropertyValue('border-radius')!=='10px'||el.style.getPropertyPriority('border-radius')!=='important')el.style.setProperty('border-radius','10px','important');});
+  const lockCardRadius=()=>{
+    document.querySelectorAll('main .panel,main .editor-column,main .editor-media-frame,main .gallery-slide,main .project-gallery figure,main .custom-section,main .next-project,main .project-hero').forEach(el=>{if(el.style.getPropertyValue('border-radius')!=='10px'||el.style.getPropertyPriority('border-radius')!=='important')el.style.setProperty('border-radius','10px','important');});
+    document.querySelectorAll('main .project-hero h1').forEach(el=>{if(el.style.getPropertyValue('letter-spacing')!=='-.025em'||el.style.getPropertyPriority('letter-spacing')!=='important')el.style.setProperty('letter-spacing','-.025em','important');});
+    document.querySelectorAll('main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card').forEach(el=>{for(const property of ['height','min-height','max-height'])if(el.style.getPropertyValue(property)!=='120px'||el.style.getPropertyPriority(property)!=='important')el.style.setProperty(property,'120px','important');});
+  };
   lockCardRadius();
   const mediaObserver=new MutationObserver(()=>{if(innerWidth<=980)adaptMedia();lockCardRadius();});
   mediaObserver.observe(document.querySelector('main'),{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
