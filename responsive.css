@@ -76,10 +76,7 @@
   body main .editor-media-frame>:is(video,img),body main .editor-column>:is(video,img){max-width:100%!important;object-fit:contain!important}
   body main .editor-photo-gallery>:is(.gallery-slide) :is(video,img){max-width:100%;object-fit:contain!important}
   body main .project-info,body main .project-meta,body main .type-specimen{overflow-wrap:anywhere}
-  body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:1!important}
   body main .editor-hoverable.in-view{transform:translateY(var(--hover-y,0px)) scale(var(--hover-scale,1)) rotate(var(--hover-rotate,0deg))!important;box-shadow:0 8px var(--hover-glow,0px) #ffffff25!important}
-  body main [data-project-grid] .project.in-view>img,body main [data-project-grid] .project.in-view>video{filter:blur(0) brightness(.68)!important;transform:scale(1.02)}
-  body main [data-project-grid] .project.in-view::before{filter:blur(0);transform:scale(1.01)}
 }
 @media(max-width:640px){
   body main .oclock-type-lab{padding:24px!important;gap:36px!important}
@@ -141,3 +138,11 @@ body main{padding-top:calc(var(--nav-y) * 2 + var(--nav-height))!important}
 body::before{height:calc(var(--nav-y) * 2 + var(--nav-height))!important}
 @media(max-width:980px){:root{--nav-y:10px;--nav-height:50px}body .nav-wrap,body .project-nav{padding:4px 14px!important}}
 @media(max-width:640px){:root{--nav-y:8px;--nav-height:46px}body .nav-wrap,body .project-nav{padding:3px 10px!important}}
+/* Keep headings legible and palette tiles equal when the grid stacks. */
+body main .project-hero h1{letter-spacing:-.025em!important;line-height:.96!important}
+body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card{height:120px!important;min-height:120px!important;max-height:120px!important}
+/* Scroll position, rather than hover, reveals palette labels and media at every width. */
+body main .oclock-hover-card>.oclock-hover-caption,
+body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.18)!important;transition:none!important}
+body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .12s linear}
+@media(prefers-reduced-motion:reduce){body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:none!important}}
