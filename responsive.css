@@ -118,7 +118,7 @@ body .project-nav-links{display:flex;align-items:center;gap:4px;margin-left:auto
 body .project-nav-links a{padding:8px 11px!important;color:#0a0a0a!important;font-size:12px!important;line-height:1!important}
 body .nav-wrap .liquid-toggle,body .project-nav .liquid-toggle{outline:0;box-shadow:inset 0 1px 2px #0000000d}
 body .nav-wrap .liquid-toggle:focus-visible,body .project-nav .liquid-toggle:focus-visible{outline:2px solid currentColor;outline-offset:3px}
-body main :is(.project.panel,.editor-column,.editor-media-frame,.gallery-slide,.project-gallery figure,.custom-section,.next-project,.project-hero){border-radius:10px!important}
+body main :is(.panel,.editor-column,.editor-media-frame,.gallery-slide,.project-gallery figure,.custom-section,.next-project,.project-hero){border-radius:10px!important}
 body main .works[data-project-grid]{column-gap:14px!important;row-gap:14px!important}
 body main .editor-columns{column-gap:14px!important;row-gap:14px!important}
 body main .project-gallery{column-gap:14px!important;row-gap:14px!important}
