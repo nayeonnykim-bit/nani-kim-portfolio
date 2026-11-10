@@ -140,7 +140,7 @@ body::before{height:calc(var(--nav-y) * 2 + var(--nav-height))!important}
 @media(max-width:640px){:root{--nav-y:8px;--nav-height:46px}body .nav-wrap,body .project-nav{padding:3px 10px!important}}
 /* Keep headings legible and palette tiles equal when the grid stacks. */
 body main .project-hero h1{letter-spacing:-.025em!important;line-height:.96!important}
-body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card{height:120px!important;min-height:120px!important;max-height:120px!important}
+body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card:not(.editor-media-frame){height:240px!important;min-height:240px!important;max-height:240px!important}
 /* Scroll position, rather than hover, reveals palette labels and media at every width. */
 body main .oclock-hover-card>.oclock-hover-caption,
 body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.38)!important;transition:opacity .18s ease-out!important}
