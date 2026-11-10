@@ -146,3 +146,6 @@ body main .oclock-hover-card>.oclock-hover-caption,
 body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.18)!important;transition:none!important}
 body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .12s linear}
 @media(prefers-reduced-motion:reduce){body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:none!important}}
+/* Text sections follow the page canvas in both visual modes at every width. */
+body main .editor-text-only{background:transparent!important}
+body.portfolio-dark main :is(.project-info,.oclock-type-lab,.editor-text-only){background:#111!important}
