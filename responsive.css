@@ -161,3 +161,43 @@ body main>section.contact.panel{display:none!important}
 /* Text sections follow the page canvas in both visual modes at every width. */
 body main .editor-text-only{background:transparent!important}
 body.portfolio-dark main :is(.project-info,.oclock-type-lab,.editor-text-only){background:#111!important}
+
+/* O'CLOCK materials: keep all four finishes on one desktop row. */
+@media(min-width:981px){
+  body main[data-project-template="oclock-v1"] .editor-columns[data-editor-id="f7e5b292-369c-45d8-a1f6-c60f9207b336"]{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:980px){
+  body main[data-project-template="oclock-v1"] .editor-columns[data-editor-id="f7e5b292-369c-45d8-a1f6-c60f9207b336"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+/* The two Transitions rows share one card size and two equal tracks. */
+@media(min-width:981px){
+  body main[data-project-template="oclock-v1"] :is(
+    .editor-columns[data-editor-id="779f4811-3403-4853-b2cb-e59a01a9ef4f"],
+    .editor-columns[data-editor-id="223f5654-003c-460f-aa2d-dc5329cf9841"]
+  ){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body main[data-project-template="oclock-v1"] :is(
+    .editor-columns[data-editor-id="779f4811-3403-4853-b2cb-e59a01a9ef4f"],
+    .editor-columns[data-editor-id="223f5654-003c-460f-aa2d-dc5329cf9841"]
+  )>.editor-media-frame{
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/9!important;
+  }
+}
+
+/* The Shorts video contains a small phone inside a landscape canvas. */
+body main[data-project-template="oclock-v1"] .project-gallery[data-editor-id="bca535a0-47ff-4833-94e6-6baeae95b626"]>.editor-media-frame{
+  transform:none!important;
+  overflow:hidden!important;
+}
+body main[data-project-template="oclock-v1"] .project-gallery[data-editor-id="bca535a0-47ff-4833-94e6-6baeae95b626"]>.editor-media-frame>video{
+  object-fit:cover!important;
+  object-position:center!important;
+}
