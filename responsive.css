@@ -147,6 +147,10 @@ body main .oclock-hover-card>.oclock-hover-caption,
 body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.38)!important;transition:opacity .18s ease-out!important}
 body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .18s ease-out}
 @media(prefers-reduced-motion:reduce){body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:none!important}}
+/* Keep the NNN_ mark the same size in every navigation and viewport. */
+body .nav-wrap .nav-brand,body .project-nav .nav-brand,body .responsive-menu-head>a{font-family:var(--site-font,"Monument Grotesk",Arial,sans-serif)!important;font-size:30px!important;font-weight:900!important;line-height:1!important;letter-spacing:-.075em!important;flex-shrink:0;white-space:nowrap}
+body .nav-wrap .nav-brand{padding-top:0!important;padding-bottom:0!important}
+body .nav-wrap .nav-brand-text{font-size:inherit!important;font-weight:inherit!important;line-height:inherit!important;letter-spacing:inherit!important}
 /* Text sections follow the page canvas in both visual modes at every width. */
 body main .editor-text-only{background:transparent!important}
 body.portfolio-dark main :is(.project-info,.oclock-type-lab,.editor-text-only){background:#111!important}
