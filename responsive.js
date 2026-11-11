@@ -50,13 +50,22 @@
   window.addEventListener('resize',lockCardRadius);
   const mediaObserver=new MutationObserver(()=>{if(innerWidth<=980)adaptMedia();lockCardRadius();});
   mediaObserver.observe(document.querySelector('main'),{subtree:true,childList:true,attributes:true,attributeFilter:['style']});
-  if('IntersectionObserver' in window){
-    const hoverObserver=new IntersectionObserver(entries=>{for(const entry of entries)entry.target.classList.toggle('in-view',entry.isIntersecting&&entry.intersectionRatio>=.45);},{threshold:[0,.25,.45,.65,1]});
-    const observeHover=()=>document.querySelectorAll('[data-project-grid] .project,.editor-hoverable,.oclock-hover-card').forEach(el=>{if(el.dataset.scrollHoverBound)return;el.dataset.scrollHoverBound='true';hoverObserver.observe(el);});
-    observeHover();const hoverMount=new MutationObserver(observeHover);hoverMount.observe(document.querySelector('main'),{childList:true,subtree:true});
-  }
-  const revealSelector='[data-project-grid] .project,.oclock-hover-card,.editor-media-frame:not(.oclock-hover-card),.editor-photo-gallery>.gallery-slide,.project-gallery figure:not(.editor-media-frame)';
-  const updateScrollReveal=()=>{const viewport=window.innerHeight||1,reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;for(const card of document.querySelectorAll(revealSelector)){const box=card.getBoundingClientRect();const position=Math.max(0,Math.min(1,(viewport*.94-box.top)/(viewport*.74)));const progress=reduced?1:position*position*(3-2*position);card.style.setProperty('--scroll-blur',`${(5*(1-progress)).toFixed(2)}px`);card.style.setProperty('--reveal-opacity',(0.38+0.62*progress).toFixed(3));}};
+  const revealSelector='main>section:not(.works):not(.editor-columns):not(.project-gallery):not(.editor-photo-gallery):not(.editor-spacer):not(.editor-line),main>.next-project,main [data-project-grid] .project,main>.editor-columns>:is(.editor-column,.editor-media-frame),main>.editor-photo-gallery>.gallery-slide,main>.project-gallery figure';
+  const updateScrollReveal=()=>{
+    const narrow=innerWidth<=980,viewport=innerHeight||1,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const clamp=value=>Math.max(0,Math.min(1,value));
+    const ease=value=>value*value*value*(value*(value*6-15)+10);
+    for(const card of document.querySelectorAll(revealSelector)){
+      if(!narrow){card.removeAttribute('data-scroll-reveal');card.style.removeProperty('--scroll-blur');card.style.removeProperty('--scroll-opacity');continue;}
+      const box=card.getBoundingClientRect();
+      const enter=clamp((viewport*.98-box.top)/(viewport*.5));
+      const leave=clamp((box.bottom-viewport*.04)/(viewport*.36));
+      const progress=reduced?1:ease(enter)*ease(leave);
+      card.setAttribute('data-scroll-reveal','');
+      card.style.setProperty('--scroll-blur',`${(1.4*(1-progress)).toFixed(2)}px`);
+      card.style.setProperty('--scroll-opacity',(0.94+0.06*progress).toFixed(3));
+    }
+  };
   let revealFrame=0;const scheduleScrollReveal=()=>{if(revealFrame)return;revealFrame=requestAnimationFrame(()=>{revealFrame=0;updateScrollReveal();});};
   window.addEventListener('scroll',scheduleScrollReveal,{passive:true});window.addEventListener('resize',scheduleScrollReveal);
   updateScrollReveal();

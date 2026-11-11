@@ -76,7 +76,6 @@
   body main .editor-media-frame>:is(video,img),body main .editor-column>:is(video,img){max-width:100%!important;object-fit:contain!important}
   body main .editor-photo-gallery>:is(.gallery-slide) :is(video,img){max-width:100%;object-fit:contain!important}
   body main .project-info,body main .project-meta,body main .type-specimen{overflow-wrap:anywhere}
-  body main .editor-hoverable.in-view{transform:translateY(var(--hover-y,0px)) scale(var(--hover-scale,1)) rotate(var(--hover-rotate,0deg))!important;box-shadow:0 8px var(--hover-glow,0px) #ffffff25!important}
 }
 @media(max-width:640px){
   body main .oclock-type-lab{padding:24px!important;gap:36px!important}
@@ -119,8 +118,7 @@ body main :is(.panel,.editor-column,.editor-media-frame,.gallery-slide,.project-
 body main .works[data-project-grid]{column-gap:14px!important;row-gap:14px!important}
 body main .editor-columns{column-gap:14px!important;row-gap:14px!important}
 body main .project-gallery{column-gap:14px!important;row-gap:14px!important}
-body main [data-project-grid] .project{--scroll-blur:5px}
-body main [data-project-grid] .project::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;backdrop-filter:blur(var(--scroll-blur,5px));-webkit-backdrop-filter:blur(var(--scroll-blur,5px))}
+body main [data-project-grid] .project::after{display:none!important}
 body main [data-project-grid] .project-copy{position:relative;z-index:1}
 @media(max-width:980px){body .project-nav-links{display:none!important}body main .works[data-project-grid],body main .editor-columns,body main .project-gallery{row-gap:16px!important;column-gap:16px!important}}
 @media(max-width:640px){body main .works[data-project-grid],body main .editor-columns,body main .project-gallery{row-gap:16px!important}}
@@ -142,11 +140,17 @@ body::before{height:calc(var(--nav-y) * 2 + var(--nav-height))!important}
 body main .project-hero h1{letter-spacing:-.025em!important;line-height:.96!important}
 body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card:not(.editor-media-frame){height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:8 / 3!important}
 @media(min-width:981px){body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card:not(.editor-media-frame){aspect-ratio:5 / 3!important}}
-/* Scroll position, rather than hover, reveals palette labels and media at every width. */
-body main .oclock-hover-card>.oclock-hover-caption,
-body main .oclock-hover-card.in-view>.oclock-hover-caption{opacity:var(--reveal-opacity,.38)!important;transition:opacity .18s ease-out!important}
-body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:blur(var(--scroll-blur,0px))!important;transition:filter .18s ease-out}
-@media(prefers-reduced-motion:reduce){body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}body main :is(.editor-media-frame,.gallery-slide,.project-gallery figure)>:is(img,video){filter:none!important}}
+/* On touch screens, the whole block, including text, clears gently as it scrolls into view. */
+@media(max-width:980px){
+  body main [data-scroll-reveal]{filter:blur(var(--scroll-blur,0px))!important;opacity:var(--scroll-opacity,1)!important;transition:filter .35s ease-out,opacity .35s ease-out!important}
+  body main .oclock-hover-card>.oclock-hover-caption{opacity:1!important}
+}
+/* Desktop keeps its original hover behavior. */
+@media(min-width:981px){
+  body main .oclock-hover-card>.oclock-hover-caption{opacity:.18!important;transition:opacity .3s ease!important}
+  body main .oclock-hover-card:is(:hover,:focus-within)>.oclock-hover-caption{opacity:1!important}
+}
+@media(prefers-reduced-motion:reduce){body main [data-scroll-reveal]{filter:none!important;opacity:1!important}}
 /* Keep the NNN mark the same size in every navigation and viewport. */
 body .nav-wrap .nav-brand,body .project-nav .nav-brand,body .responsive-menu-head>a{font-family:var(--site-font,"Monument Grotesk",Arial,sans-serif)!important;font-size:30px!important;font-weight:900!important;line-height:1!important;letter-spacing:-.075em!important;flex-shrink:0;white-space:nowrap}
 body .nav-wrap .nav-brand{padding-top:0!important;padding-bottom:0!important}
