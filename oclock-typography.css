@@ -9,9 +9,12 @@
 .type-characters{font-size:clamp(30px,4.2vw,66px);line-height:1.28;letter-spacing:-.035em;margin-bottom:clamp(38px,4vw,64px);overflow:hidden}
 .type-characters p{margin:0;white-space:nowrap}
 .type-weight-control{display:grid;grid-template-columns:minmax(0,1fr) 56px;align-items:center;gap:20px}
-.type-weight-slider{position:relative;height:36px;cursor:ew-resize;touch-action:none;outline:none}
-.type-weight-slider::before{content:"";position:absolute;left:0;right:0;top:50%;height:1.5px;background:#111;transform:translateY(-50%)}
-.type-weight-knob{position:absolute;top:50%;left:50%;width:18px;height:18px;border-radius:50%;background:#111;transform:translate(-50%,-50%);transition:left 90ms ease}
+.type-weight-slider{position:relative;height:40px;cursor:ew-resize;touch-action:none;outline:none;user-select:none;-webkit-user-select:none}
+.type-weight-slider::before{content:"";position:absolute;inset:6px 0;background:rgba(17,17,17,.16);border-radius:999px;pointer-events:none}
+.type-weight-knob{position:absolute;top:50%;left:50%;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.24);transform:translate(-50%,-50%);transition:left 90ms ease;pointer-events:none}
+.type-weight-slider:active .type-weight-knob{transition:none}
+.type-weight-slider:focus-visible::before{outline:2px solid currentColor;outline-offset:3px}
+body.portfolio-dark .type-weight-slider::before{background:rgba(255,255,255,.28)}
 .type-weight-number{text-align:right;font-size:18px;font-variant-numeric:tabular-nums}
 .type-weight-label{display:block;margin-top:14px;font-size:16px}
 .type-characters{font-synthesis:none}
@@ -22,4 +25,6 @@
 @media(hover:none){.oclock-hover-card>.oclock-hover-caption{opacity:1}}
 @media(prefers-reduced-motion:reduce){.oclock-hover-caption{transition:none!important}}
 .type-face-select{display:block;margin-top:18px;max-width:100%;padding:7px 10px;background:#fff;color:#111;border:1px solid #ccc;border-radius:5px;font:14px Arial,sans-serif}
+.editor-photo-gallery>.gallery-slide.desert-type-specimen>figcaption{inset:auto auto clamp(18px,2vw,30px) clamp(18px,2vw,30px)!important;width:auto!important;max-width:calc(100% - 36px)!important;padding:0!important;background:transparent!important;color:#fff!important;font-family:Portfolio,Arial,sans-serif!important;font-size:clamp(10px,.85vw,13px)!important;font-weight:500!important;line-height:1!important;letter-spacing:.16em!important;text-transform:uppercase;white-space:nowrap;z-index:3;opacity:.92}
+.editor-photo-gallery>.gallery-slide.desert-type-positive>figcaption{color:#111!important}
 @media(max-width:760px){.oclock-type-lab{grid-template-columns:1fr}.type-characters{font-size:clamp(28px,9vw,52px)}}

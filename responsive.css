@@ -140,6 +140,7 @@ body::before{height:calc(var(--nav-y) * 2 + var(--nav-height))!important}
 body main .project-hero h1{letter-spacing:-.025em!important;line-height:.96!important}
 body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card:not(.editor-media-frame){height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:8 / 3!important}
 @media(min-width:981px){body main .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame))>.oclock-hover-card:not(.editor-media-frame){aspect-ratio:5 / 3!important}}
+@media(min-width:981px){body main[data-project-template="oclock-v1"] .editor-columns:has(> .oclock-hover-card:not(.editor-media-frame)){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 /* On touch screens, the whole block, including text, clears gently as it scrolls into view. */
 @media(max-width:980px){
   body main [data-scroll-reveal]{filter:blur(var(--scroll-blur,0px))!important;opacity:var(--scroll-opacity,1)!important;transition:filter .35s ease-out,opacity .35s ease-out!important}
